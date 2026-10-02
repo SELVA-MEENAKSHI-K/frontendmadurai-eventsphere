@@ -1,21 +1,38 @@
+கீழே முழு `README.md` content. இதை README file-ல் paste பண்ணுங்க. Frontend link-ஆ screenshot-ல் இருந்த Vercel link சேர்த்திருக்கேன்; terminal-ல் இப்போதைய deploy வேறு link கொடுத்திருந்தால் அந்த வரியை மட்டும் மாற்றுங்க. Backend இன்னும் deploy ஆகாததால் live backend link என்று தவறான link சேர்க்கவில்லை.
+
 # Madurai EventSphere
 
-A web application for discovering events in Madurai. Users can browse event listings, filter events, view event details, and explore event locations on a map.
+A mobile-friendly event discovery platform for the Kiro University Challenge 2026. Users can explore events, view event details, and use Supabase-backed features as they are implemented.
 
-## Project Status
+## Project Links
 
-The React frontend and Express backend scaffold are in the repository. The backend health endpoint and automated tests are in place. Supabase integration and Vercel deployment are planned next steps.
+- **Frontend website:** https://frontendmadurai-eventsphere-6n22g9dx3.vercel.app
+- **GitHub repository:** https://github.com/SELVA-MEENAKSHI-K/frontendmadurai-eventsphere
+- **Supabase project dashboard:** https://supabase.com/dashboard/project/mmmpbjkvdhrxrjgxvtyb
+- **Supabase project URL:** https://mmmpbjkvdhrxrjgxvtyb.supabase.co
+- **Backend API:** Not deployed yet
+- **Local backend health check:** http://localhost:3001/api/health
 
-## Features
+## Project Structure
 
-- Browse and filter events
-- View event details
-- Explore event locations on a map
-- Responsive React interface
-- Express API with a health-check endpoint
-- Unit and property-based tests
+```text
+frontendmadurai-eventsphere/
+├── src/                    # React frontend source code
+├── public/                 # Static frontend assets
+├── index.html
+├── package.json            # Frontend dependencies and scripts
+├── vite.config.js
+└── backend/
+    ├── src/
+    │   ├── app.js           # Express application
+    │   └── __tests__/       # Backend tests
+    ├── api/
+    │   └── index.js         # Vercel serverless entry point
+    ├── package.json
+    └── vercel.json
+```
 
-## Tech Stack
+## Technology
 
 ### Frontend
 
@@ -24,47 +41,14 @@ The React frontend and Express backend scaffold are in the repository. The backe
 - Tailwind CSS
 - React Router
 - Axios
-- Leaflet
+- Supabase JavaScript client
 
 ### Backend
 
 - Node.js
 - Express
-- CORS
-- dotenv
+- Supabase JavaScript client
 - Vitest
-- Supertest
-
-### Planned
-
-- Supabase for database, authentication, and storage
-- Vercel for frontend and backend deployment
-
-## Repository Structure
-
-```text
-frontendmadurai-eventsphere/
-├── .kiro/
-│   ├── hooks/
-│   ├── specs/madurai-eventsphere/
-│   └── steering/
-├── src/                         # React application
-│   └── utils/__tests__/          # Frontend utility and property-based tests
-├── backend/
-│   ├── api/index.js              # Vercel serverless entry point
-│   ├── src/app.js                # Express application and health endpoint
-│   ├── src/__tests__/            # Backend tests
-│   ├── package.json
-│   └── vercel.json
-├── index.html
-├── package.json
-└── vite.config.js
-```
-
-## Requirements
-
-- Node.js and npm
-- Git
 
 ## Run the Frontend Locally
 
@@ -75,11 +59,15 @@ npm install
 npm run dev
 ```
 
-Vite will print the local address in the terminal.
+Vite prints a local address in the terminal, usually:
+
+```text
+http://localhost:5173
+```
 
 ## Run the Backend Locally
 
-Open another terminal:
+Open a second terminal:
 
 ```bash
 cd backend
@@ -87,17 +75,19 @@ npm install
 npm run dev
 ```
 
-The backend runs on port `3001` by default.
+The backend runs at:
 
-## API Health Check
+```text
+http://localhost:3001
+```
 
-With the backend running, open:
+Check that it is running:
 
 ```text
 http://localhost:3001/api/health
 ```
 
-A successful response looks like:
+Expected response:
 
 ```json
 {
@@ -106,51 +96,58 @@ A successful response looks like:
 }
 ```
 
-## Run Tests
-
-### Frontend tests
-
-From the repository root:
-
-```bash
-npx vitest --run
-```
-
-On Windows PowerShell, use:
-
-```powershell
-npx.cmd vitest --run
-```
-
-### Backend tests
-
-From the `backend/` folder:
-
-```bash
-npm test
-```
-
-The backend tests cover the health endpoint and an unknown route. Frontend utility tests include property-based tests using `fast-check`.
-
 ## Environment Variables
 
-Example environment files are provided for local setup. Copy the relevant example file to a local environment file and fill in values only when the corresponding integration is configured.
+Create a `.env` file in the frontend project root for local development:
 
-Do not commit `.env` files or share secret keys publicly. Supabase setup is not complete yet.
+```env
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your-publishable-or-anon-key
+VITE_API_BASE_URL=http://localhost:3001
+```
+
+For the backend, create `backend/.env`:
+
+```env
+SUPABASE_URL=https://your-project-id.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-server-only-secret-key
+PORT=3001
+```
+
+Set the corresponding production variables in the Vercel project settings. Frontend variables must be available to the Production environment before deploying.
+
+**Security:** Never commit `.env` files or expose the Supabase secret/service-role key in frontend code, Vite variables, screenshots, or public repositories. Use only the publishable key (or legacy anon key) in the browser.
 
 ## Deployment
 
-The project is organized so the frontend and backend can be deployed as separate Vercel projects:
+The frontend is deployed on Vercel:
 
-- Frontend: repository root
-- Backend: `backend/`
+- https://frontendmadurai-eventsphere-6n22g9dx3.vercel.app
 
-Deployment is not complete yet. Add the deployed URLs here after both projects are working.
+To deploy the frontend from the repository root using Vercel CLI:
 
-## Kiro Project Artifacts
+```bash
+npx vercel --prod
+```
 
-The `.kiro/` directory contains the EventSphere specification, project steering guidance, and task-completion hook configuration.
+The backend is configured for Vercel under `backend/`, but it does not have a confirmed working production URL yet.
+
+## Tests
+
+Run backend tests:
+
+```bash
+cd backend
+npm test
+```
+
+## Current Status
+
+- Frontend project is deployed to Vercel.
+- Supabase project has been created and frontend environment variables have been added to Vercel.
+- Backend scaffold and health endpoint are available locally.
+- Backend production deployment and database schema setup are still pending.
 
 ## License
 
-No license has been added to this repository yet.
+No license has been specified yet.
