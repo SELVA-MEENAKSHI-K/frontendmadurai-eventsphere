@@ -20,7 +20,7 @@
 | Task | Description | Status |
 |---|---|---|
 | T1-01 | Initialize frontend (Vite + React + Tailwind) | `[x]` |
-| T1-02 | Initialize backend (Express + Vercel serverless) | `[ ]` |
+| T1-02 | Initialize backend (Express + Vercel serverless) | `[x]` |
 | T1-03 | Configure Supabase project + tables + RLS | `[ ]` |
 | T1-04 | Connect backend to Supabase | `[ ]` |
 | T1-05 | Connect frontend to backend | `[x]` |

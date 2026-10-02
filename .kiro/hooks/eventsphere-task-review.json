@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "EventSphere Task Completion Reviewer",
+      "trigger": "PostTaskExec",
+      "description": "After a spec task is marked complete, reviews it against its linked requirement and suggests which property-based tests should cover it. Reports only — never edits files or runs commands.",
+      "action": {
+        "type": "agent",
+        "prompt": "A Kiro spec task for the Madurai EventSphere project was just marked as complete.\n\nYour job is to review it and provide a short, actionable report. Follow these steps:\n\n1. **Identify the completed task.** Look at the most recently completed task in .kiro/specs/madurai-eventsphere/tasks.md — find its task ID (e.g. T2-03), description, and which phase it belongs to.\n\n2. **Find the linked requirement.** Cross-reference the task against .kiro/specs/madurai-eventsphere/requirements.md to identify which FR-XX requirement(s) it implements. Quote the relevant acceptance criteria.\n\n3. **Check implementation evidence.** Briefly note which source files in src/ are most relevant to the completed task (components, utils, services, pages). Do not read their full contents — just name them.\n\n4. **Suggest tests.** Based on the requirement's acceptance criteria, suggest 2–4 specific property-based test cases that should cover this task. For each, state:\n   - The universal property in plain English (\"For any X, Y should always hold\")\n   - Which existing test file it belongs in (or whether a new file is needed)\n   - The requirement ID it traces back to\n\n5. **Flag gaps.** If the completed task touches logic that has no property-based test coverage yet, flag it clearly as \"⚠️ No PBT coverage\".\n\nFormat your response as a short Markdown report with these sections:\n- ## Task Completed\n- ## Linked Requirement\n- ## Suggested Tests\n- ## Coverage Gaps\n\nRules:\n- Do NOT edit any files\n- Do NOT run any shell commands, PowerShell, or terminal operations\n- Do NOT commit or push anything\n- Only report and suggest — no code generation unless explicitly asked\n- Keep the report under 300 words"
+      }
+    }
+  ]
+}
