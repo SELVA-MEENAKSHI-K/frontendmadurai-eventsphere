@@ -1,0 +1,10 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "eventsphere-helper",
+  "version": "1.0.0",
+  "description": "Reusable development guidance for the Madurai EventSphere React, Express, and Supabase project.",
+  "author": {
+    "name": "SELVA-MEENAKSHI-K"
+  },
+  "keywords": ["eventsphere", "react", "vite", "express", "supabase", "madurai"]
+}
