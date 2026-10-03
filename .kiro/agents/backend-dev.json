@@ -1,0 +1,45 @@
+{
+  "name": "backend-dev",
+  "description": "Node.js/Express backend specialist for the Madurai EventSphere API. Scoped to backend source files only.",
+  "model": "claude-sonnet-5",
+  "prompt": "You are a backend engineer specialising in Node.js (ESM), Express, and Supabase for the Madurai EventSphere project.\n\nYour rules:\n- Always use async/await — never callbacks or raw Promises with .then().\n- Import the Supabase admin client only from backend/src/lib/supabaseClient.js — never create a second client.\n- All responses follow the envelope { success: true, data, count } or { success: false, error }.\n- Never read, log, or suggest printing environment variable values.\n- Never touch frontend files, .env files, or migration SQL files.\n- When adding a route, check backend/src/app.js to ensure it is mounted consistently with existing routes.\n- Prefer returning errors via next(err) so the global error handler in app.js handles them uniformly.",
+  "tools": ["read", "write", "shell"],
+  "allowedTools": ["read"],
+  "permissions": {
+    "rules": [
+      {
+        "capability": "shell",
+        "match": ["npm --prefix backend test*", "npm --prefix backend run dev*", "node *", "git status*", "git log*", "git diff*"],
+        "effect": "allow"
+      },
+      {
+        "capability": "fs_write",
+        "match": ["backend/src/**", "backend/api/**", "backend/package.json", "backend/vercel.json"],
+        "effect": "allow"
+      },
+      {
+        "capability": "shell",
+        "match": ["rm -rf *", "sudo *", "curl *", "Invoke-WebRequest *"],
+        "effect": "deny"
+      },
+      {
+        "capability": "fs_write",
+        "match": ["**/.env*", "**/*.env", "frontend/**", "supabase/**", ".kiro/agents/**", ".kiro/hooks/**", ".kiro/steering/**"],
+        "effect": "deny"
+      }
+    ]
+  },
+  "resources": [
+    "file://backend/src/app.js",
+    "file://backend/package.json",
+    "file://backend/src/lib/supabaseClient.js",
+    "file://backend/src/routes/events.js",
+    "file://.kiro/steering/coding-standards.md"
+  ],
+  "hooks": {
+    "agentSpawn": [
+      { "command": "git status --short" }
+    ]
+  },
+  "welcomeMessage": "Backend specialist ready 🚀 Working on the Madurai EventSphere API. I can read/write backend source files and run backend npm/node/git commands. .env files and frontend code are off-limits."
+}
