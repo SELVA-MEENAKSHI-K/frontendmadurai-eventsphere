@@ -1,4 +1,3 @@
-கீழே முழு `README.md` content. இதை README file-ல் paste பண்ணுங்க. Frontend link-ஆ screenshot-ல் இருந்த Vercel link சேர்த்திருக்கேன்; terminal-ல் இப்போதைய deploy வேறு link கொடுத்திருந்தால் அந்த வரியை மட்டும் மாற்றுங்க. Backend இன்னும் deploy ஆகாததால் live backend link என்று தவறான link சேர்க்கவில்லை.
 
 # Madurai EventSphere
 
