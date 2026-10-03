@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
+import eventsRouter from './routes/events.js'
 
 const app = express()
 const PORT = process.env.PORT ?? 3001
@@ -14,6 +15,9 @@ app.use(express.json())
 app.get('/api/health', (_req, res) => {
   res.json({ success: true, message: 'EventSphere API running' })
 })
+
+// ── Routes ────────────────────────────────────────────────────────────────────
+app.use('/api/events', eventsRouter)
 
 // ── Global error handler ──────────────────────────────────────────────────────
 app.use((err, _req, res, _next) => {
