@@ -5,6 +5,7 @@ import EventMap from '../components/map/EventMap'
 import { useFilters } from '../context/FilterContext'
 import { getEvents } from '../services/eventService'
 import { SEARCH_DEBOUNCE_MS } from '../utils/constants'
+import useBookmarks from '../hooks/useBookmarks'
 
 const SAMPLE_EVENTS = [
   { id: 'sample-1', title: 'HackMadurai 2026', category: 'hackathon', domain: ['AI/ML', 'Web Dev'], venue_name: 'Thiagarajar College of Engineering', micro_location: 'Madurai South', event_date: '2026-11-15T09:00:00Z', deadline: '2026-11-10T23:59:00Z', poster_url: null, latitude: 9.8933, longitude: 78.1108 },
@@ -17,6 +18,7 @@ const SAMPLE_EVENTS = [
 
 export default function HomePage() {
   const { filters, setFilter, clearFilters } = useFilters()
+  const { bookmarkedIds, toggleBookmark }    = useBookmarks()
   const [events, setEvents]     = useState([])
   const [loading, setLoading]   = useState(true)
   const [viewMode, setViewMode] = useState('grid')
@@ -75,7 +77,7 @@ export default function HomePage() {
 
       <div className="hidden lg:grid lg:grid-cols-5 lg:gap-6">
         <div className="lg:col-span-3">
-          <EventGrid events={events} loading={loading} onClearFilters={clearFilters} />
+          <EventGrid events={events} loading={loading} bookmarkedIds={bookmarkedIds} onBookmark={toggleBookmark} onClearFilters={clearFilters} />
         </div>
         <div className="lg:col-span-2 h-[600px] sticky top-20">
           <EventMap events={events} onMarkerClick={setSelectedEventId} selectedEventId={selectedEventId} />
@@ -84,7 +86,7 @@ export default function HomePage() {
 
       <div className="lg:hidden">
         {viewMode === 'grid'
-          ? <EventGrid events={events} loading={loading} onClearFilters={clearFilters} />
+          ? <EventGrid events={events} loading={loading} bookmarkedIds={bookmarkedIds} onBookmark={toggleBookmark} onClearFilters={clearFilters} />
           : <div className="h-[500px]"><EventMap events={events} onMarkerClick={setSelectedEventId} selectedEventId={selectedEventId} /></div>
         }
       </div>

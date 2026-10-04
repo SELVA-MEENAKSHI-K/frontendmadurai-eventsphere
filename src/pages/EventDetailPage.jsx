@@ -5,13 +5,14 @@ import EventBadge from '../components/events/EventBadge'
 import LoadingSpinner from '../components/common/LoadingSpinner'
 import { getEventById } from '../services/eventService'
 import { formatDateTime, isDeadlinePassed, deadlineCountdown } from '../utils/dateUtils'
+import useBookmarks from '../hooks/useBookmarks'
 
 export default function EventDetailPage() {
   const { id } = useParams()
   const [event, setEvent]     = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError]     = useState(null)
-  const [bookmarked, setBookmarked] = useState(false)
+  const { bookmarkedIds, toggleBookmark } = useBookmarks()
 
   useEffect(() => {
     async function load() {
@@ -64,8 +65,8 @@ export default function EventDetailPage() {
               ? <img src={poster_url} alt={`${title} poster`} className="w-full h-full object-cover" />
               : <div className="w-full h-full flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-blue-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg></div>
             }
-            <button onClick={() => setBookmarked(b => !b)} className="absolute top-4 right-4 p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors shadow" aria-label={bookmarked ? 'Remove bookmark' : 'Bookmark this event'}>
-              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 transition-colors ${bookmarked ? 'text-blue-600 fill-blue-600' : 'text-gray-400'}`} viewBox="0 0 24 24" stroke="currentColor" fill={bookmarked ? 'currentColor' : 'none'}>
+            <button onClick={() => toggleBookmark(id)} className="absolute top-4 right-4 p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors shadow" aria-label={bookmarkedIds.has(id) ? 'Remove bookmark' : 'Bookmark this event'}>
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 transition-colors ${bookmarkedIds.has(id) ? 'text-blue-600 fill-blue-600' : 'text-gray-400'}`} viewBox="0 0 24 24" stroke="currentColor" fill={bookmarkedIds.has(id) ? 'currentColor' : 'none'}>
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
               </svg>
             </button>

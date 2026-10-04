@@ -7,9 +7,13 @@ import { FilterProvider } from './context/FilterContext'
 
 import Navbar from './components/common/Navbar'
 import Footer from './components/common/Footer'
+import ProtectedRoute from './components/common/ProtectedRoute'
 
 import HomePage from './pages/HomePage'
 import EventDetailPage from './pages/EventDetailPage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import BookmarksPage from './pages/BookmarksPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
@@ -25,6 +29,16 @@ export default function App() {
                 <Routes>
                   <Route path="/"           element={<HomePage />} />
                   <Route path="/events/:id" element={<EventDetailPage />} />
+                  <Route path="/login"      element={<LoginPage />} />
+                  <Route path="/register"   element={<RegisterPage />} />
+                  <Route
+                    path="/bookmarks"
+                    element={
+                      <ProtectedRoute>
+                        <BookmarksPage />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route path="*"           element={<NotFoundPage />} />
                 </Routes>
               </main>
