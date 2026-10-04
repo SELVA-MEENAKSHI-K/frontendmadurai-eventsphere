@@ -1,4 +1,11 @@
 import axios from 'axios'
+import { createClient } from '@supabase/supabase-js'
+
+// Shared browser Supabase client — used only to read the current session token
+const _supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+)
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001',
@@ -6,8 +13,9 @@ const api = axios.create({
   timeout: 10000,
 })
 
-api.interceptors.request.use(config => {
-  const token = sessionStorage.getItem('sb_access_token')
+api.interceptors.request.use(async config => {
+  const { data: { session } } = await _supabase.auth.getSession()
+  const token = session?.access_token
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
