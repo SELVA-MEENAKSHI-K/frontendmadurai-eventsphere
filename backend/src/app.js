@@ -2,6 +2,8 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import eventsRouter from './routes/events.js'
+import bookmarksRouter from './routes/bookmarks.js'
+import organizerRouter from './routes/organizer.js'
 
 const app = express()
 const PORT = process.env.PORT ?? 3001
@@ -18,6 +20,8 @@ app.get('/api/health', (_req, res) => {
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 app.use('/api/events', eventsRouter)
+app.use('/api/bookmarks', bookmarksRouter)
+app.use('/api/organizer', organizerRouter)
 
 // ── Global error handler ──────────────────────────────────────────────────────
 app.use((err, _req, res, _next) => {
