@@ -16,6 +16,14 @@ export default function EventDetailPage() {
   const [loading, setLoading]     = useState(true)
   const [error, setError]         = useState(null)
   const [imgLoaded, setImgLoaded] = useState(false)
+  const [registeredDemoIds, setRegisteredDemoIds] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('eventsphere_demo_registrations') || '[]')
+      return Array.isArray(saved) ? saved : []
+    } catch {
+      return []
+    }
+  })
   const { bookmarkedIds, toggleBookmark } = useBookmarks()
 
   useEffect(() => {
@@ -56,6 +64,18 @@ export default function EventDetailPage() {
       toast.success('Link copied to clipboard!')
     } catch (err) {
       if (err?.name !== 'AbortError') toast.error('Could not share this event.')
+    }
+  }
+
+  function handleDemoRegistration() {
+    if (registeredDemoIds.includes(id)) return
+    const next = [...registeredDemoIds, id]
+    try {
+      localStorage.setItem('eventsphere_demo_registrations', JSON.stringify(next))
+      setRegisteredDemoIds(next)
+      toast.success('Demo registration complete! No real registration was sent.')
+    } catch {
+      toast.error('Could not save this demo registration in your browser.')
     }
   }
 
@@ -236,7 +256,19 @@ export default function EventDetailPage() {
             )}
 
             <div className="pt-4 border-t border-gray-100 flex flex-wrap items-center gap-3">
-              {registration_url && !deadlinePassed ? (
+              {is_demo && !deadlinePassed ? (
+                <div className="flex flex-col items-start gap-2">
+                  <button
+                    type="button"
+                    onClick={handleDemoRegistration}
+                    disabled={registeredDemoIds.includes(id)}
+                    className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-green-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  >
+                    {registeredDemoIds.includes(id) ? 'Registered (Demo)' : 'Register for this event (Demo)'}
+                  </button>
+                  <p className="text-xs text-gray-500">Demo registration is saved only in this browser; it is not sent to the organiser.</p>
+                </div>
+              ) : registration_url && !deadlinePassed ? (
                 <a
                   href={registration_url}
                   target="_blank"
@@ -250,7 +282,7 @@ export default function EventDetailPage() {
                 </a>
               ) : (
                 <button disabled aria-disabled="true" className="inline-flex items-center gap-2 bg-gray-200 text-gray-500 font-semibold px-6 py-3 rounded-xl cursor-not-allowed">
-                  {is_demo ? 'Demo — registration unavailable' : deadlinePassed ? 'Registration Closed' : 'Registration unavailable'}
+                  {is_demo && deadlinePassed ? 'Demo registration closed' : deadlinePassed ? 'Registration Closed' : 'Registration unavailable'}
                 </button>
               )}
 
