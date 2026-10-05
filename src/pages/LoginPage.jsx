@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function LoginPage() {
-  const { login }  = useAuth()
+  const { login, loginAsDemo } = useAuth()
   const navigate   = useNavigate()
   const location   = useLocation()
 
@@ -27,6 +27,12 @@ export default function LoginPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  function handleDemoLogin() {
+    setError(null)
+    loginAsDemo()
+    navigate(from, { replace: true })
   }
 
   return (
@@ -88,6 +94,23 @@ export default function LoginPage() {
           >
             {loading ? 'Signing in…' : 'Sign in'}
           </button>
+
+          <div className="flex items-center gap-3 text-xs text-gray-400" aria-hidden="true">
+            <span className="h-px flex-1 bg-gray-200" />
+            <span>OR</span>
+            <span className="h-px flex-1 bg-gray-200" />
+          </div>
+
+          <button
+            type="button"
+            onClick={handleDemoLogin}
+            className="w-full border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold py-2.5 rounded-xl transition-colors"
+          >
+            Continue as Demo Student
+          </button>
+          <p className="-mt-3 text-center text-xs text-gray-500">
+            Demo mode only. Changes may not be saved to your account.
+          </p>
 
           <p className="text-center text-sm text-gray-500">
             Don&apos;t have an account?{' '}

@@ -5,6 +5,13 @@ const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [user, setUser]       = useState(null)
+  const [demoUser, setDemoUser] = useState(() => {
+    try {
+      return JSON.parse(sessionStorage.getItem('eventsphere_demo_user') || 'null')
+    } catch {
+      return null
+    }
+  })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -35,6 +42,8 @@ export function AuthProvider({ children }) {
   }
 
   async function login(email, password) {
+    sessionStorage.removeItem('eventsphere_demo_user')
+    setDemoUser(null)
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -43,22 +52,40 @@ export function AuthProvider({ children }) {
     return data
   }
 
+  function loginAsDemo() {
+    const demo = {
+      id: 'demo-student',
+      email: 'demo@student.eventsphere.local',
+      user_metadata: { full_name: 'Demo Student', role: 'student', college: 'Demo College' },
+    }
+    sessionStorage.setItem('eventsphere_demo_user', JSON.stringify(demo))
+    setDemoUser(demo)
+  }
+
   async function logout() {
+    if (demoUser) {
+      sessionStorage.removeItem('eventsphere_demo_user')
+      setDemoUser(null)
+      await supabase.auth.signOut()
+      return
+    }
     await supabase.auth.signOut()
   }
 
-  const profile = user
+  const activeUser = demoUser ?? user
+  const profile = activeUser
     ? {
-        id:        user.id,
-        email:     user.email,
-        full_name: user.user_metadata?.full_name ?? user.email,
-        role:      user.user_metadata?.role ?? 'student',
-        college:   user.user_metadata?.college ?? null,
+        id:        activeUser.id,
+        email:     activeUser.email,
+        full_name: activeUser.user_metadata?.full_name ?? activeUser.email,
+        role:      activeUser.user_metadata?.role ?? 'student',
+        college:   activeUser.user_metadata?.college ?? null,
+        isDemo:    Boolean(demoUser),
       }
     : null
 
   return (
-    <AuthContext.Provider value={{ user: profile, loading, login, register, logout, supabase }}>
+    <AuthContext.Provider value={{ user: profile, loading, login, loginAsDemo, register, logout, supabase }}>
       {children}
     </AuthContext.Provider>
   )
