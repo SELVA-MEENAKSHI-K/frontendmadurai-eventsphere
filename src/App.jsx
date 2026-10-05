@@ -20,6 +20,7 @@ import EventEditPage from './pages/EventEditPage'
 import OrganizerDashboardPage from './pages/OrganizerDashboardPage'
 import DemoRegistrationsPage from './pages/DemoRegistrationsPage'
 import DemoCheckinPage from './pages/DemoCheckinPage'
+import ProfilePage from './pages/ProfilePage'
 import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
@@ -37,6 +38,14 @@ export default function App() {
                   <Route path="/events/:id" element={<EventDetailPage />} />
                   <Route path="/login"      element={<LoginPage />} />
                   <Route path="/register"   element={<RegisterPage />} />
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute>
+                        <ProfilePage />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route
                     path="/bookmarks"
                     element={

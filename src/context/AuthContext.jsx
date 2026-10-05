@@ -62,6 +62,29 @@ export function AuthProvider({ children }) {
     setDemoUser(demo)
   }
 
+  async function updateProfile({ full_name, college }) {
+    if (demoUser) {
+      const updated = {
+        ...demoUser,
+        user_metadata: {
+          ...demoUser.user_metadata,
+          full_name: full_name.trim(),
+          college: college.trim() || null,
+        },
+      }
+      sessionStorage.setItem('eventsphere_demo_user', JSON.stringify(updated))
+      setDemoUser(updated)
+      return updated
+    }
+
+    const { data, error } = await supabase.auth.updateUser({
+      data: { full_name: full_name.trim(), college: college.trim() || null },
+    })
+    if (error) throw error
+    if (data.user) setUser(data.user)
+    return data.user
+  }
+
   async function logout() {
     if (demoUser) {
       sessionStorage.removeItem('eventsphere_demo_user')
@@ -85,7 +108,7 @@ export function AuthProvider({ children }) {
     : null
 
   return (
-    <AuthContext.Provider value={{ user: profile, loading, login, loginAsDemo, register, logout, supabase }}>
+    <AuthContext.Provider value={{ user: profile, loading, login, loginAsDemo, register, updateProfile, logout, supabase }}>
       {children}
     </AuthContext.Provider>
   )
