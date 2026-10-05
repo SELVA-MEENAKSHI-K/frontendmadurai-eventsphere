@@ -2,21 +2,33 @@ import { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import EventGrid from '../components/events/EventGrid'
 import useBookmarks from '../hooks/useBookmarks'
+import { useAuth } from '../context/AuthContext'
 import { getBookmarks } from '../services/bookmarkService'
+import sampleEvents from '../data/sampleEvents'
 
 export default function BookmarksPage() {
+  const { user }                          = useAuth()
   const { bookmarkedIds, toggleBookmark } = useBookmarks()
   const [events, setEvents]   = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError]     = useState(null)
 
+  const isDemo = Boolean(user?.isDemo)
+
   useEffect(() => {
+    if (isDemo) {
+      // Demo mode — resolve bookmarked IDs from the local sample data; no API call
+      const saved = sampleEvents.filter(e => bookmarkedIds.has(e.id))
+      setEvents(saved)
+      setLoading(false)
+      return
+    }
+
     async function load() {
       setLoading(true)
       setError(null)
       try {
         const result = await getBookmarks()
-        // Each bookmark row has a nested event object from the backend join
         const bookmarkedEvents = (result.data ?? [])
           .map(b => b.event)
           .filter(Boolean)
@@ -28,12 +40,16 @@ export default function BookmarksPage() {
       }
     }
     load()
-  }, [])
+  // Re-run when bookmarkedIds changes so demo list stays in sync after toggling
+  }, [isDemo, bookmarkedIds])
 
   // Remove from local list immediately when unbookmarked
   function handleBookmark(eventId) {
     toggleBookmark(eventId)
-    setEvents(prev => prev.filter(e => e.id !== eventId))
+    if (!isDemo) {
+      setEvents(prev => prev.filter(e => e.id !== eventId))
+    }
+    // Demo list updates automatically via the bookmarkedIds dependency above
   }
 
   return (
@@ -45,7 +61,11 @@ export default function BookmarksPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900">My Bookmarks</h1>
-          <p className="text-sm text-gray-500 mt-1">Events you&apos;ve saved for later</p>
+          <p className="text-sm text-gray-500 mt-1">
+            {isDemo
+              ? 'Demo mode — bookmarks are saved locally in your browser.'
+              : "Events you've saved for later"}
+          </p>
         </div>
 
         {error && (
