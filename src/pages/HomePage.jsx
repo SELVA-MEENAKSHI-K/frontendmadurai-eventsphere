@@ -10,15 +10,7 @@ import { useFilters } from '../context/FilterContext'
 import { getEvents } from '../services/eventService'
 import { SEARCH_DEBOUNCE_MS } from '../utils/constants'
 import useBookmarks from '../hooks/useBookmarks'
-
-const SAMPLE_EVENTS = [
-  { id: 'sample-1', title: 'HackMadurai 2026', category: 'hackathon', domain: ['AI/ML', 'Web Dev'], venue_name: 'Thiagarajar College of Engineering', micro_location: 'Madurai South', event_date: '2026-11-15T09:00:00Z', deadline: '2026-11-10T23:59:00Z', poster_url: null, latitude: 9.8933, longitude: 78.1108 },
-  { id: 'sample-2', title: 'StartupSphere Bootcamp', category: 'bootcamp', domain: ['Business', 'Design'], venue_name: 'Madurai Startup Hub', micro_location: 'Anna Nagar', event_date: '2026-12-01T10:00:00Z', deadline: '2026-11-28T23:59:00Z', poster_url: null, latitude: 9.9390, longitude: 78.1322 },
-  { id: 'sample-3', title: 'IoT & Hardware Workshop', category: 'workshop', domain: ['Hardware/IoT', 'Data Science'], venue_name: 'MDMA College of Engineering', micro_location: 'KK Nagar', event_date: '2026-11-22T09:30:00Z', deadline: '2026-11-20T23:59:00Z', poster_url: null, latitude: 9.9601, longitude: 78.0881 },
-  { id: 'sample-4', title: 'Madurai Tech Meetup — October', category: 'meetup', domain: ['Web Dev', 'Cybersecurity'], venue_name: 'Kumaran Ratnam Library', micro_location: 'Tallakulam', event_date: '2026-10-25T18:00:00Z', deadline: null, poster_url: null, latitude: 9.9312, longitude: 78.1205 },
-  { id: 'sample-5', title: 'AI Symposium 2026', category: 'symposium', domain: ['AI/ML', 'Data Science'], venue_name: 'Mepco Schlenk Engineering College', micro_location: 'Pasumalai', event_date: '2026-12-10T09:00:00Z', deadline: '2026-12-05T23:59:00Z', poster_url: null, latitude: 9.9010, longitude: 78.0754 },
-  { id: 'sample-6', title: 'Community Builders Madurai', category: 'community', domain: ['Business', 'Design'], venue_name: 'Town Hall Auditorium', micro_location: 'Othakadai', event_date: '2026-11-05T17:00:00Z', deadline: null, poster_url: null, latitude: 9.9489, longitude: 78.1567 },
-]
+import sampleEvents from '../data/sampleEvents'
 
 export default function HomePage() {
   const { filters, setFilter, clearFilters } = useFilters()
@@ -40,9 +32,9 @@ export default function HomePage() {
     try {
       const result = await getEvents(activeFilters)
       const data   = result?.data ?? []
-      setEvents(data.length > 0 ? data : SAMPLE_EVENTS)
+      setEvents(data.length > 0 ? data : sampleEvents)
     } catch {
-      setEvents(SAMPLE_EVENTS)
+      setEvents(sampleEvents)
     } finally {
       setLoading(false)
     }

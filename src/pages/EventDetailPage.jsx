@@ -8,6 +8,7 @@ import { getEventById } from '../services/eventService'
 import { formatDateTime, isDeadlinePassed, isDeadlineSoon, deadlineCountdown } from '../utils/dateUtils'
 import useBookmarks from '../hooks/useBookmarks'
 import { downloadICS, googleCalendarUrl } from '../utils/calendarUtils'
+import { getSampleEventById } from '../data/sampleEvents'
 
 export default function EventDetailPage() {
   const { id }     = useParams()
@@ -19,12 +20,24 @@ export default function EventDetailPage() {
 
   useEffect(() => {
     async function load() {
+      setError(null)
+      setEvent(null)
       try {
         setLoading(true)
         const result = await getEventById(id)
-        setEvent(result?.data ?? result)
+        const eventData = result?.data ?? result
+        const sampleEvent = getSampleEventById(id)
+        if (eventData?.id) {
+          setEvent(eventData)
+        } else if (sampleEvent) {
+          setEvent(sampleEvent)
+        } else {
+          setError('Event not found.')
+        }
       } catch (err) {
-        setError(err.message)
+        const sampleEvent = getSampleEventById(id)
+        if (sampleEvent) setEvent(sampleEvent)
+        else setError(err.message || 'Could not load this event.')
       } finally {
         setLoading(false)
       }
@@ -62,6 +75,7 @@ export default function EventDetailPage() {
     venue_name, address, micro_location,
     event_date, deadline, registration_url,
     poster_url, organizer, latitude, longitude,
+    is_demo,
   } = event
 
   const deadlinePassed = isDeadlinePassed(deadline)
@@ -164,6 +178,11 @@ export default function EventDetailPage() {
           {/* Content */}
           <div className="p-6 sm:p-8">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight mb-3">{title}</h1>
+            {is_demo && (
+              <p className="text-xs font-medium text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2 mb-4">
+                Demo event · Sample information for preview; registration is not available.
+              </p>
+            )}
 
             {domain.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
@@ -231,7 +250,7 @@ export default function EventDetailPage() {
                 </a>
               ) : (
                 <button disabled aria-disabled="true" className="inline-flex items-center gap-2 bg-gray-200 text-gray-500 font-semibold px-6 py-3 rounded-xl cursor-not-allowed">
-                  Registration Closed
+                  {is_demo ? 'Demo — registration unavailable' : deadlinePassed ? 'Registration Closed' : 'Registration unavailable'}
                 </button>
               )}
 
