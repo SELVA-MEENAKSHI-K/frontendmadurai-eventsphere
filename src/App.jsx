@@ -16,6 +16,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import BookmarksPage from './pages/BookmarksPage'
 import EventCreatePage from './pages/EventCreatePage'
+import EventEditPage from './pages/EventEditPage'
 import OrganizerDashboardPage from './pages/OrganizerDashboardPage'
 import NotFoundPage from './pages/NotFoundPage'
 
@@ -59,6 +60,14 @@ export default function App() {
                     }
                   />
                   {/* /organizer/events/:id/edit wired in T4-03 */}
+                  <Route
+                    path="/organizer/events/:id/edit"
+                    element={
+                      <OrganizerRoute>
+                        <EventEditPage />
+                      </OrganizerRoute>
+                    }
+                  />
                   <Route path="*"           element={<NotFoundPage />} />
                 </Routes>
               </main>
