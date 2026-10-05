@@ -48,3 +48,15 @@ export const MADURAI_ZOOM   = 12
 
 // Debounce delay for search input (ms)
 export const SEARCH_DEBOUNCE_MS = 300
+
+// Approximate centre of each micro-location — used to pre-fill map coordinates
+// when an organizer doesn't pick an exact point.
+export const AREA_COORDS = {
+  'Anna Nagar':    [9.9390, 78.1322],
+  'KK Nagar':      [9.9601, 78.0881],
+  'Tallakulam':    [9.9312, 78.1205],
+  'Madurai South': [9.8933, 78.1108],
+  'Pasumalai':     [9.9010, 78.0754],
+  'Othakadai':     [9.9489, 78.1567],
+  'Usilampatti':   [9.9693, 77.7860],
+}
