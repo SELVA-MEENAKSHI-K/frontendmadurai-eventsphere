@@ -22,6 +22,7 @@ import OrganizerDashboardPage from './pages/OrganizerDashboardPage'
 import DemoRegistrationsPage from './pages/DemoRegistrationsPage'
 import DemoCheckinPage from './pages/DemoCheckinPage'
 import ProfilePage from './pages/ProfilePage'
+import CalendarPage from './pages/CalendarPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
               <main className="flex-1">
                 <Routes>
                   <Route path="/"           element={<HomePage />} />
+                  <Route path="/calendar"   element={<CalendarPage />} />
                   <Route path="/events/:id" element={<EventDetailPage />} />
                   <Route path="/login"      element={<LoginPage />} />
                   <Route path="/register"   element={<RegisterPage />} />

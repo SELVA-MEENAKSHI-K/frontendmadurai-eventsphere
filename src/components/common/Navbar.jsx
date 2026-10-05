@@ -23,6 +23,7 @@ export default function Navbar() {
 
           <nav className="hidden md:flex items-center gap-6" aria-label="Main navigation">
             <NavLink to="/" end className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>Home</NavLink>
+            <NavLink to="/calendar" className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>Calendar</NavLink>
             {user && <NavLink to="/profile" className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>Profile</NavLink>}
             {user && <NavLink to="/bookmarks" className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>Bookmarks</NavLink>}
             {user && <NavLink to="/my-registrations" className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>My Registrations</NavLink>}
@@ -54,6 +55,7 @@ export default function Navbar() {
       {menuOpen && (
         <div className="md:hidden border-t border-gray-100 bg-white px-4 py-3 space-y-2">
           <NavLink to="/" end onClick={closeMenu} className={({ isActive }) => `block text-sm font-medium py-2 ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>Home</NavLink>
+          <NavLink to="/calendar" onClick={closeMenu} className={({ isActive }) => `block text-sm font-medium py-2 ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>Calendar</NavLink>
           {user && <NavLink to="/profile" onClick={closeMenu} className={({ isActive }) => `block text-sm font-medium py-2 ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>Profile</NavLink>}
           {user && <NavLink to="/bookmarks" onClick={closeMenu} className={({ isActive }) => `block text-sm font-medium py-2 ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>Bookmarks</NavLink>}
           {user && <NavLink to="/my-registrations" onClick={closeMenu} className={({ isActive }) => `block text-sm font-medium py-2 ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>My Registrations</NavLink>}
