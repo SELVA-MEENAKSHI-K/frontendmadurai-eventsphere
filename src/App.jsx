@@ -1,20 +1,32 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { Toaster } from 'react-hot-toast'
 
-import { AuthProvider } from './context/AuthContext'
+import { AuthProvider, useAuth } from './context/AuthContext'
 import { FilterProvider } from './context/FilterContext'
 
 import Navbar from './components/common/Navbar'
 import Footer from './components/common/Footer'
 import ProtectedRoute from './components/common/ProtectedRoute'
+import LoadingSpinner from './components/common/LoadingSpinner'
 
 import HomePage from './pages/HomePage'
 import EventDetailPage from './pages/EventDetailPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import BookmarksPage from './pages/BookmarksPage'
+import EventCreatePage from './pages/EventCreatePage'
 import NotFoundPage from './pages/NotFoundPage'
+
+// Redirects unauthenticated users to /login and students to /.
+// Only organizers pass through.
+function OrganizerRoute({ children }) {
+  const { user, loading } = useAuth()
+  if (loading) return <LoadingSpinner message="Checking permissions…" />
+  if (!user) return <Navigate to="/login" replace />
+  if (user.role !== 'organizer') return <Navigate to="/" replace />
+  return children
+}
 
 export default function App() {
   return (
@@ -37,6 +49,14 @@ export default function App() {
                       <ProtectedRoute>
                         <BookmarksPage />
                       </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/organizer/events/new"
+                    element={
+                      <OrganizerRoute>
+                        <EventCreatePage />
+                      </OrganizerRoute>
                     }
                   />
                   <Route path="*"           element={<NotFoundPage />} />
