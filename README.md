@@ -1,6 +1,4 @@
-Bro, கீழே முழு README content இருக்கு. இதை repo root-ல உள்ள `README.md`-க்கு paste பண்ணலாம். Kiro lessons-ல நமக்குத் தெரிந்த task IDs மட்டும் சேர்த்திருக்கேன்; இன்னும் confirm ஆகாதவற்றை complete-னு claim பண்ணலை.
 
-```markdown
 # Madurai EventSphere
 
 Madurai EventSphere helps students and organizers discover and manage events around Madurai. Find hackathons, workshops, bootcamps, meetups, and other opportunities in one place.
