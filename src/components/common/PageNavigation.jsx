@@ -7,6 +7,12 @@ export default function PageNavigation() {
   if (location.pathname === '/') return null
 
   function goBack() {
+    // On auth pages, always go home to avoid returning to a protected page
+    // that would immediately redirect back to login.
+    if (location.pathname === '/login' || location.pathname === '/register') {
+      navigate('/')
+      return
+    }
     if (window.history.state?.idx > 0) {
       navigate(-1)
       return
