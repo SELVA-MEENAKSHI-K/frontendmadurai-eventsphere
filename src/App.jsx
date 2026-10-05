@@ -9,6 +9,7 @@ import Navbar from './components/common/Navbar'
 import Footer from './components/common/Footer'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import OrganizerRoute from './components/common/OrganizerRoute'
+import PageNavigation from './components/common/PageNavigation'
 
 import HomePage from './pages/HomePage'
 import EventDetailPage from './pages/EventDetailPage'
@@ -31,6 +32,7 @@ export default function App() {
           <FilterProvider>
             <div className="min-h-screen bg-gray-50 flex flex-col">
               <Navbar />
+              <PageNavigation />
 
               <main className="flex-1">
                 <Routes>
