@@ -1,220 +1,124 @@
+Bro, கீழே முழு README content இருக்கு. இதை repo root-ல உள்ள `README.md`-க்கு paste பண்ணலாம். Kiro lessons-ல நமக்குத் தெரிந்த task IDs மட்டும் சேர்த்திருக்கேன்; இன்னும் confirm ஆகாதவற்றை complete-னு claim பண்ணலை.
+
+```markdown
 # Madurai EventSphere
 
-Madurai EventSphere is an event discovery platform for students, founders, and organizers in Madurai. It helps people find hackathons, symposiums, workshops, bootcamps, meetups, and community events through searchable listings, filters, event details, and a map.
+Madurai EventSphere helps students and organizers discover and manage events around Madurai. Find hackathons, workshops, bootcamps, meetups, and other opportunities in one place.
 
-## Links
-
-- **Live app:** https://frontendmadurai-eventsphere.vercel.app/
-- **GitHub repository:** https://github.com/SELVA-MEENAKSHI-K/frontendmadurai-eventsphere
-- **Kiro Power:** https://github.com/SELVA-MEENAKSHI-K/frontendmadurai-eventsphere/tree/master/powers/eventsphere-helper
+**Live app:** https://frontendmadurai-eventsphere.vercel.app/  
+**GitHub:** https://github.com/SELVA-MEENAKSHI-K/frontendmadurai-eventsphere
 
 ## Features
 
-### Discover events
+- **Event discovery:** Browse events, search by keyword, and filter by category, domain, area, and date.
+- **Event details:** View event information, venue, eligibility, registration deadline, and registration link.
+- **Calendar:** Browse events by month and open an event from its calendar entry.
+- **Map and location:** Explore event locations on a map when coordinates are available.
+- **Bookmarks:** Save events and view them on a protected bookmarks page.
+- **Authentication:** Login and registration pages with Supabase authentication, plus a demo login option.
+- **Demo events:** Sample Madurai events keep the app explorable when the events API is unavailable. Demo events clearly indicate when registration is unavailable.
+- **Organizer tools:** Organizer dashboard, event creation and editing pages, and publish controls.
+- **Profile:** View and update profile information.
+- **Registrations and QR check-in:** Demo registration tokens, a registrations page, and QR/manual check-in flow.
+- **Responsive navigation:** Mobile-friendly menu and navigation controls across pages.
 
-- Search events by title or description.
-- Filter by category, domain, Madurai area, and date range.
-- Use quick category filters and sort by upcoming date or closing deadline.
-- Browse events in a card grid or on an interactive Leaflet map.
-- View sample Madurai events when the event API is unavailable.
+Some features use demo data or demo behavior. Availability of live data and authenticated API operations depends on the backend and Supabase configuration.
 
-### Event details
+## Kiro University Challenge Work
 
-- View event date, registration deadline, venue, area, eligibility, description, and organizer information.
-- See deadline urgency and countdown information.
-- Open event locations in OpenStreetMap.
-- Share event links using the device share menu or copy-link fallback.
-- Add events to Google Calendar or download an `.ics` calendar file.
-- Bookmark events.
+Each lesson is listed on **one table row**. Status reflects the work recorded in this repository history; verify it against the Kiro University dashboard before submitting.
 
-### Accounts and profile
-
-- Sign up and sign in with Supabase Auth.
-- Use the demo student login to explore the app without a real account.
-- Edit profile name and college details.
-- Protected pages require a signed-in user.
-
-### Bookmarks and demo registration
-
-- Save and remove bookmarks.
-- Demo-user bookmarks persist in the browser's local storage.
-- Register for sample events in demo mode and receive a QR code.
-- View demo registrations and their check-in status.
-- Organizers can scan a QR code when the browser supports it or enter a token manually.
-- Demo registration and check-in data is stored in the current browser; it is not a production registration system.
-
-### Organizer tools
-
-- View organizer events grouped by all, published, and draft status.
-- See event statistics and publish or unpublish events.
-- Create and edit events with validated fields.
-- Select event coordinates using the location picker.
-- Delete events from the organizer dashboard.
-
-### Calendar
-
-- Browse events in a month grid.
-- Move between months or return to today.
-- Select a date to see its events and open an event detail page.
-
-## Routes
-
-| Route | Page | Access |
+| Lesson | Work recorded | Status |
 |---|---|---|
-| `/` | Event discovery home | Public |
-| `/calendar` | Event calendar | Public |
-| `/events/:id` | Event details | Public |
-| `/login` | Sign in | Public |
-| `/register` | Create account | Public |
-| `/profile` | User profile | Signed-in users |
-| `/bookmarks` | Saved events | Signed-in users |
-| `/my-registrations` | Demo registrations and QR codes | Signed-in users |
-| `/organizer/dashboard` | Manage organizer events | Organizer |
-| `/organizer/events/new` | Create an event | Organizer |
-| `/organizer/events/:id/edit` | Edit an event | Organizer |
-| `/organizer/checkin` | Scan or manually enter demo check-in tokens | Organizer |
+| T3-01 | Supabase user-profile setup and `handle_new_user` trigger work | SQL trigger application needs dashboard verification |
+| T3-02 | Login and registration pages and routes | Implemented |
+| T3-03 | Shared Supabase client and API authentication token handling | Implemented |
+| T3-04 | Bookmark API service, hook, protected page, and event-card integration | Implemented |
+| T4-01 | Organizer event creation form, location picker, and protected organizer route | Implemented |
+| T4-03 | Organizer event editing flow and route | Implemented |
+| T4-05 | Backend deployment and production configuration | Pending verification |
+| Bonus | `eventsphere-helper` Kiro Power package | Packaged; installation and scorecard credit need verification |
 
-Unknown routes show a 404 page. Back and Home navigation controls are available throughout the app.
+## Demo Mode
 
-## Technology
+Demo mode is intended to make the interface usable for demonstrations when the live backend is not configured or reachable.
 
-### Frontend
+- Sample events are provided as fallback data.
+- Demo accounts can explore supported flows without a real account.
+- Demo registrations and QR check-in use demo data.
+- Demo events may not have live registration or persistence.
 
-- React 18 and Vite
+Do not treat demo interactions as proof that a production API operation succeeded.
+
+## Tech Stack
+
+- React 18
+- Vite
 - Tailwind CSS
 - React Router
-- Supabase JavaScript client and Supabase Auth
-- Axios
+- Supabase authentication
 - Leaflet and React Leaflet
 - `react-hot-toast`
 - `react-helmet-async`
+- Node.js and Express backend
 
-### Backend
-
-- Node.js and Express
-- Supabase JavaScript client
-- Vercel serverless function entry point
-- Vitest and Supertest
-
-### Tests and utilities
-
-- Vitest
-- fast-check property-based tests
-- Shared utilities for dates, event filters, calendar links, map markers, sorting, and event validation
-
-## Kiro University project work
-
-The repository includes Kiro project configuration and examples for the challenge lessons:
-
-1. **Spec-driven development:** `.kiro/specs/madurai-eventsphere/requirements.md`, `design.md`, and `tasks.md`
-2. **Steering documents:** `.kiro/steering/coding-standards.md`
-3. **Hooks:** `.kiro/hooks/eventsphere-task-review.json` and `.kiro/hooks/kironomics.json`
-4. **Property-based testing:** `src/utils/__tests__/pbt.generative.test.js` and related tests under `src/utils/__tests__/` and `src/services/__tests__/`
-5. **Kiro Power:** `powers/eventsphere-helper/POWER.md`, `plugin.json`, and `skills/event-development/SKILL.md`
-6. **Model Context Protocol:** `.kiro/settings/mcp.json`
-7. **Custom agents:** `.kiro/agents/frontend-dev.json` and `.kiro/agents/backend-dev.json`
-
-## Project structure
+## Project Structure
 
 ```text
-.
-├── .kiro/
-│   ├── agents/                 # Frontend and backend custom agents
-│   ├── hooks/                  # Task review and workflow hooks
-│   ├── settings/               # MCP server configuration
-│   ├── specs/madurai-eventsphere/
-│   └── steering/
-├── backend/
-│   ├── api/                    # Vercel serverless entry point
-│   └── src/                    # Express app, routes, middleware, tests
-├── powers/eventsphere-helper/
-│   ├── POWER.md
-│   ├── plugin.json
-│   └── skills/event-development/SKILL.md
-└── src/
-    ├── components/
-    ├── context/
-    ├── data/                   # Sample events for demo/fallback
-    ├── hooks/
-    ├── pages/
-    ├── services/
-    └── utils/
+frontendmadurai-eventsphere/
+├── backend/                 # Express API
+├── powers/
+│   └── eventsphere-helper/  # Kiro Power package
+├── src/
+│   ├── components/          # Shared UI and event components
+│   ├── context/             # Authentication context
+│   ├── data/                # Demo event data
+│   ├── hooks/               # Reusable React hooks
+│   ├── pages/               # Application routes and pages
+│   ├── services/            # API service modules
+│   └── utils/               # Shared utilities
+├── vercel.json              # SPA route fallback
+└── README.md
 ```
 
-## Run locally
+## Run Locally
 
 ### Frontend
 
-From the repository root:
-
 ```bash
 npm install
 npm run dev
 ```
-
-Vite will print the local frontend URL, usually `http://localhost:5173`.
 
 ### Backend
 
-In a second terminal:
-
 ```bash
 cd backend
 npm install
 npm run dev
 ```
 
-The local API runs at `http://localhost:3001`. Check its health at:
+Set the required environment variables in local environment files before using live Supabase or API features. Never commit secret keys.
 
-```text
-http://localhost:3001/api/health
-```
+## Deployment
 
-## Environment variables
+The frontend is deployed on Vercel and connected to the GitHub repository. The root `vercel.json` rewrite lets client-side routes such as `/register`, `/login`, and `/calendar` load directly.
 
-Create a `.env` file in the frontend project root:
+Live backend features require a deployed backend, correct Vercel environment variables, and valid Supabase configuration.
 
-```env
-VITE_SUPABASE_URL=https://your-project-id.supabase.co
-VITE_SUPABASE_ANON_KEY=your-publishable-or-anon-key
-VITE_API_BASE_URL=http://localhost:3001
-```
+## Accessibility and UX
 
-Create `backend/.env` for local backend development:
+The app includes responsive layouts, labeled form controls, keyboard-friendly navigation, and loading, error, and empty states. Color contrast and responsive behavior should be checked against the rendered UI before claiming full WCAG compliance.
 
-```env
-SUPABASE_URL=https://your-project-id.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your-server-only-secret-key
-PORT=3001
-```
+## Current Verification Notes
 
-Set production environment variables in the corresponding Vercel project settings.
-
-**Security:** Never commit `.env` files. Never expose the Supabase service-role key in frontend code, Vite variables, screenshots, or public repositories. Use only the publishable/anon key in the browser.
-
-## Tests and build
-
-From the repository root:
-
-```bash
-npm test
-npm run build
-```
-
-For backend tests:
-
-```bash
-cd backend
-npm test
-```
-
-## Demo notes
-
-- The app can display six sample events if the live event API is unavailable.
-- Demo sign-in, demo bookmarks, registrations, QR tokens, and check-in state are browser-local.
-- Real-user bookmarks and organizer actions use the backend API and require a correctly configured backend and Supabase project.
-- Demo QR check-in is for demonstration; persistent production registration and check-in require server-side storage and API support.
+- Confirm the latest Vercel production deployment before sharing the live link.
+- Verify backend environment variables and the production API connection.
+- Apply or verify the Supabase `handle_new_user` trigger.
+- Check lesson completion and bonus credit in the Kiro University dashboard.
+- Run the project’s build and test commands before submitting a release.
 
 ## License
 
-No license has been specified yet.
+Add the license chosen for this project before redistributing it.
+```
