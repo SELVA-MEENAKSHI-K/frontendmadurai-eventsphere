@@ -200,7 +200,7 @@ export default function EventDetailPage() {
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight mb-3">{title}</h1>
             {is_demo && (
               <p className="text-xs font-medium text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2 mb-4">
-                Demo event · Sample information for preview; registration is not available.
+                Demo event · Sample information for preview.
               </p>
             )}
 
