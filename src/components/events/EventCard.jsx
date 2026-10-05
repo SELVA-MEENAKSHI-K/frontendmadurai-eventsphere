@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import EventBadge from './EventBadge'
+import { CATEGORY_STYLES } from '../../utils/constants'
 import { formatDate, isDeadlinePassed, isDeadlineSoon, deadlineCountdown } from '../../utils/dateUtils'
 
 export default function EventCard({ event, isBookmarked = false, onBookmark }) {
@@ -8,6 +9,10 @@ export default function EventCard({ event, isBookmarked = false, onBookmark }) {
   const deadlineSoon   = isDeadlineSoon(deadline)
   const countdown      = deadlineCountdown(deadline)
   const visibleDomains = domain.slice(0, 3)
+  const d        = event_date ? new Date(event_date) : null
+  const dayNum   = d && !Number.isNaN(d.getTime()) ? d.getDate() : null
+  const monthStr = dayNum ? d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase() : null
+  const tint     = CATEGORY_STYLES[category?.toLowerCase()]?.bg ?? 'bg-blue-50'
 
   function handleBookmark(e) {
     e.preventDefault()
@@ -17,7 +22,7 @@ export default function EventCard({ event, isBookmarked = false, onBookmark }) {
 
   return (
     <Link to={`/events/${id}`} className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" aria-label={`View details for ${title}`}>
-      <div className="relative h-44 bg-gradient-to-br from-blue-50 to-indigo-100 overflow-hidden">
+      <div className={`relative h-44 overflow-hidden ${poster_url ? 'bg-gray-100' : `${tint} bg-gradient-to-br from-white/40 to-transparent`}`}>
         {poster_url
           ? <img src={poster_url} alt={`${title} poster`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
           : <div className="w-full h-full flex items-center justify-center">
@@ -27,6 +32,12 @@ export default function EventCard({ event, isBookmarked = false, onBookmark }) {
             </div>
         }
         <div className="absolute top-3 left-3"><EventBadge category={category} /></div>
+        {dayNum && (
+          <div className="absolute bottom-3 right-3 bg-white rounded-xl shadow-sm px-2.5 py-1 text-center leading-tight" aria-hidden="true">
+            <div className="text-[10px] font-bold text-blue-600 tracking-wide">{monthStr}</div>
+            <div className="text-lg font-bold text-gray-900">{dayNum}</div>
+          </div>
+        )}
         <button onClick={handleBookmark} className="absolute top-3 right-3 p-1.5 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors shadow-sm" aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark this event'}>
           <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 transition-colors ${isBookmarked ? 'text-blue-600 fill-blue-600' : 'text-gray-400'}`} viewBox="0 0 24 24" stroke="currentColor" fill={isBookmarked ? 'currentColor' : 'none'}>
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />

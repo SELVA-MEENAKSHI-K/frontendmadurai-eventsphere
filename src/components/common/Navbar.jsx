@@ -25,6 +25,7 @@ export default function Navbar() {
             <NavLink to="/" end className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>Home</NavLink>
             {user && <NavLink to="/bookmarks" className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>Bookmarks</NavLink>}
             {user?.role === 'organizer' && <NavLink to="/organizer/dashboard" className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>My Events</NavLink>}
+            {user?.role === 'organizer' && <NavLink to="/organizer/events/new" className="text-sm font-medium bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-colors">+ Post event</NavLink>}
             {user ? (
               <div className="flex items-center gap-3">
                 <span className="text-sm text-gray-700 font-medium">{user.full_name}</span>
@@ -52,6 +53,7 @@ export default function Navbar() {
           <NavLink to="/" end onClick={closeMenu} className={({ isActive }) => `block text-sm font-medium py-2 ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>Home</NavLink>
           {user && <NavLink to="/bookmarks" onClick={closeMenu} className={({ isActive }) => `block text-sm font-medium py-2 ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>Bookmarks</NavLink>}
           {user?.role === 'organizer' && <NavLink to="/organizer/dashboard" onClick={closeMenu} className={({ isActive }) => `block text-sm font-medium py-2 ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>My Events</NavLink>}
+          {user?.role === 'organizer' && <NavLink to="/organizer/events/new" onClick={closeMenu} className="block text-sm font-medium py-2 text-blue-600">+ Post event</NavLink>}
           {user ? (
             <div className="pt-2 border-t border-gray-100">
               <p className="text-sm text-gray-500 mb-2">{user.full_name}</p>
