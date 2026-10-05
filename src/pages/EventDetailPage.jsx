@@ -9,6 +9,7 @@ import { formatDateTime, isDeadlinePassed, isDeadlineSoon, deadlineCountdown } f
 import useBookmarks from '../hooks/useBookmarks'
 import { downloadICS, googleCalendarUrl } from '../utils/calendarUtils'
 import { getSampleEventById } from '../data/sampleEvents'
+import { registerForDemoEvent, getRegistrationForEvent, qrImageUrl } from '../utils/demoCheckin'
 
 export default function EventDetailPage() {
   const { id }     = useParams()
@@ -16,14 +17,9 @@ export default function EventDetailPage() {
   const [loading, setLoading]     = useState(true)
   const [error, setError]         = useState(null)
   const [imgLoaded, setImgLoaded] = useState(false)
-  const [registeredDemoIds, setRegisteredDemoIds] = useState(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem('eventsphere_demo_registrations') || '[]')
-      return Array.isArray(saved) ? saved : []
-    } catch {
-      return []
-    }
-  })
+  const [demoRegistration, setDemoRegistration] = useState(() =>
+    getRegistrationForEvent(id ?? '')
+  )
   const { bookmarkedIds, toggleBookmark } = useBookmarks()
 
   useEffect(() => {
@@ -68,15 +64,10 @@ export default function EventDetailPage() {
   }
 
   function handleDemoRegistration() {
-    if (registeredDemoIds.includes(id)) return
-    const next = [...registeredDemoIds, id]
-    try {
-      localStorage.setItem('eventsphere_demo_registrations', JSON.stringify(next))
-      setRegisteredDemoIds(next)
-      toast.success('Demo registration complete! No real registration was sent.')
-    } catch {
-      toast.error('Could not save this demo registration in your browser.')
-    }
+    if (demoRegistration) return
+    const reg = registerForDemoEvent(id)
+    setDemoRegistration(reg)
+    toast.success('Demo registration complete! Scan the QR code at check-in.')
   }
 
   if (loading) return <LoadingSpinner message="Loading event details..." />
@@ -258,15 +249,38 @@ export default function EventDetailPage() {
             <div className="pt-4 border-t border-gray-100 flex flex-wrap items-center gap-3">
               {is_demo && !deadlinePassed ? (
                 <div className="flex flex-col items-start gap-2">
-                  <button
-                    type="button"
-                    onClick={handleDemoRegistration}
-                    disabled={registeredDemoIds.includes(id)}
-                    className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-green-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  >
-                    {registeredDemoIds.includes(id) ? 'Registered (Demo)' : 'Register for this event (Demo)'}
-                  </button>
-                  <p className="text-xs text-gray-500">Demo registration is saved only in this browser; it is not sent to the organiser.</p>
+                  {demoRegistration ? (
+                    <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 flex flex-col items-center gap-3 w-full sm:w-auto">
+                      <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide">Demo Registration QR</p>
+                      <img
+                        src={qrImageUrl(demoRegistration.token)}
+                        alt={`QR code for token ${demoRegistration.token}`}
+                        width={180}
+                        height={180}
+                        className="rounded-xl border border-blue-200"
+                      />
+                      <p className="text-[11px] font-mono text-blue-800 bg-white border border-blue-200 rounded-lg px-3 py-1.5 select-all tracking-widest">
+                        {demoRegistration.token}
+                      </p>
+                      <p className="text-xs text-gray-500 text-center max-w-xs">
+                        Show this QR or type the code above at the check-in desk.
+                        Demo only — not sent to the organiser.
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        onClick={handleDemoRegistration}
+                        className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                      >
+                        Register for this event (Demo)
+                      </button>
+                      <p className="text-xs text-gray-500">
+                        Demo registration is saved only in this browser; it is not sent to the organiser.
+                      </p>
+                    </>
+                  )}
                 </div>
               ) : registration_url && !deadlinePassed ? (
                 <a

@@ -18,6 +18,8 @@ import BookmarksPage from './pages/BookmarksPage'
 import EventCreatePage from './pages/EventCreatePage'
 import EventEditPage from './pages/EventEditPage'
 import OrganizerDashboardPage from './pages/OrganizerDashboardPage'
+import DemoRegistrationsPage from './pages/DemoRegistrationsPage'
+import DemoCheckinPage from './pages/DemoCheckinPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
@@ -65,6 +67,22 @@ export default function App() {
                     element={
                       <OrganizerRoute>
                         <EventEditPage />
+                      </OrganizerRoute>
+                    }
+                  />
+                  <Route
+                    path="/my-registrations"
+                    element={
+                      <ProtectedRoute>
+                        <DemoRegistrationsPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/organizer/checkin"
+                    element={
+                      <OrganizerRoute>
+                        <DemoCheckinPage />
                       </OrganizerRoute>
                     }
                   />

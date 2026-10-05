@@ -24,7 +24,9 @@ export default function Navbar() {
           <nav className="hidden md:flex items-center gap-6" aria-label="Main navigation">
             <NavLink to="/" end className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>Home</NavLink>
             {user && <NavLink to="/bookmarks" className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>Bookmarks</NavLink>}
+            {user && <NavLink to="/my-registrations" className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>My Registrations</NavLink>}
             {user?.role === 'organizer' && <NavLink to="/organizer/dashboard" className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>My Events</NavLink>}
+            {user?.role === 'organizer' && <NavLink to="/organizer/checkin" className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>Check-in</NavLink>}
             {user?.role === 'organizer' && <NavLink to="/organizer/events/new" className="text-sm font-medium bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-colors">+ Post event</NavLink>}
             {user ? (
               <div className="flex items-center gap-3">
@@ -52,7 +54,9 @@ export default function Navbar() {
         <div className="md:hidden border-t border-gray-100 bg-white px-4 py-3 space-y-2">
           <NavLink to="/" end onClick={closeMenu} className={({ isActive }) => `block text-sm font-medium py-2 ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>Home</NavLink>
           {user && <NavLink to="/bookmarks" onClick={closeMenu} className={({ isActive }) => `block text-sm font-medium py-2 ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>Bookmarks</NavLink>}
+          {user && <NavLink to="/my-registrations" onClick={closeMenu} className={({ isActive }) => `block text-sm font-medium py-2 ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>My Registrations</NavLink>}
           {user?.role === 'organizer' && <NavLink to="/organizer/dashboard" onClick={closeMenu} className={({ isActive }) => `block text-sm font-medium py-2 ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>My Events</NavLink>}
+          {user?.role === 'organizer' && <NavLink to="/organizer/checkin" onClick={closeMenu} className={({ isActive }) => `block text-sm font-medium py-2 ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>Check-in</NavLink>}
           {user?.role === 'organizer' && <NavLink to="/organizer/events/new" onClick={closeMenu} className="block text-sm font-medium py-2 text-blue-600">+ Post event</NavLink>}
           {user ? (
             <div className="pt-2 border-t border-gray-100">
