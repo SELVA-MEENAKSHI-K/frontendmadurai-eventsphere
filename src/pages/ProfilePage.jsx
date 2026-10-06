@@ -123,12 +123,12 @@ export default function ProfilePage() {
 
         {/* ── Header card ─────────────────────────────────────────── */}
         <section className="bg-white dark:bg-brand-900 rounded-3xl border border-brand-100 dark:border-brand-800 shadow-card overflow-hidden mb-6">
-          <div className="h-28 sm:h-32 bg-gradient-to-br from-brand-600 via-brand-700 to-brand-800 relative" aria-hidden="true">
+          <div className="h-28 sm:h-32 bg-gradient-to-br from-brand-600 via-brand-700 to-brand-800 relative overflow-hidden" aria-hidden="true">
             <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold-300/20 blur-2xl" />
             <div className="absolute left-1/3 -bottom-16 h-40 w-40 rounded-full bg-saffron-400/20 blur-2xl" />
           </div>
 
-          <div className="px-6 sm:px-8 pb-6">
+          <div className="relative z-10 px-6 sm:px-8 pb-6">
             <div className="flex flex-col sm:flex-row sm:items-end gap-4 -mt-10">
               <div
                 className="h-20 w-20 rounded-full bg-gradient-to-br from-saffron-600 to-gold-500 text-white flex items-center justify-center text-2xl font-bold ring-4 ring-white dark:ring-brand-900 shadow-sm flex-shrink-0"
