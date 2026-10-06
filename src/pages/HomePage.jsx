@@ -22,8 +22,6 @@ export default function HomePage() {
   const [selectedEventId, setSelectedEventId] = useState(null)
   const [sortMode, setSortMode] = useState('soonest')
 
-  // Guard: the non-search filter effect already fetches on mount;
-  // skip the debounced search effect on first render to avoid a double fetch.
   const firstSearchRun = useRef(true)
   const debounceTimer  = useRef(null)
 
@@ -40,12 +38,10 @@ export default function HomePage() {
     }
   }, [])
 
-  // Immediate fetch when non-search filters change (also runs on mount)
   useEffect(() => {
     fetchEvents(filters)
   }, [filters.category, filters.domain, filters.micro_location, filters.date_from, filters.date_to])
 
-  // Debounced fetch for search — skip the very first render
   useEffect(() => {
     if (firstSearchRun.current) { firstSearchRun.current = false; return }
     if (debounceTimer.current) clearTimeout(debounceTimer.current)
@@ -59,68 +55,108 @@ export default function HomePage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-      {/* Hero banner */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-blue-600 to-indigo-700 text-white px-6 py-10 sm:px-12 sm:py-14 mb-8 shadow-lg">
-        <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl" aria-hidden="true" />
-        <div className="absolute -left-10 -bottom-20 h-56 w-56 rounded-full bg-indigo-400/20 blur-2xl" aria-hidden="true" />
+      {/* ── Hero ──────────────────────────────────────────────────────────── */}
+      {/* Maroon bg. Cream on maroon = 11.8:1 ✅. White on maroon = 9.1:1 ✅.
+          Saffron-400 on maroon = 3.1:1 — used only for the word "Madurai"
+          rendered at display size (font-display, ≥36px) → large text ✅.
+          Gold-300 on maroon chip = 6.60:1 ✅.                              */}
+      <section
+        className="relative overflow-hidden rounded-4xl bg-brand-600 dark:bg-brand-800 text-white px-6 py-12 sm:px-12 sm:py-16 mb-8 shadow-lg"
+        style={{ backgroundImage: 'radial-gradient(circle, rgba(253,246,236,0.06) 1px, transparent 1px)', backgroundSize: '20px 20px' }}
+      >
+        {/* Decorative blobs */}
+        <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-saffron-400/10 blur-3xl pointer-events-none" aria-hidden="true" />
+        <div className="absolute -left-12 -bottom-24 h-64 w-64 rounded-full bg-teal-500/10 blur-3xl pointer-events-none" aria-hidden="true" />
+
         <div className="relative max-w-2xl">
-          <p className="text-blue-100 text-sm font-medium mb-2">📍 Madurai · students · founders · makers</p>
-          <h1 className="text-3xl sm:text-5xl font-extrabold leading-tight mb-3">
-            Find your next event in <span className="text-yellow-300">Madurai</span>
-          </h1>
-          <p className="text-blue-100 text-base sm:text-lg mb-6">
-            Hackathons, symposiums, bootcamps and meetups — all in one place.
+          <p className="text-brand-50/70 text-sm font-semibold mb-3 tracking-wide uppercase">
+            📍 Madurai · students · founders · makers
           </p>
+
+          <h1 className="font-display text-4xl sm:text-6xl font-bold leading-tight mb-4 text-white">
+            Find your next event in{' '}
+            {/* saffron-400 at ≥36px display = large text, 3.1:1 on maroon ✅ */}
+            <span className="text-saffron-400">Madurai</span>
+          </h1>
+
+          <p className="text-brand-50/80 text-base sm:text-lg mb-7 max-w-lg">
+            Hackathons, symposiums, bootcamps and meetups — all in one place for students and innovators.
+          </p>
+
+          {/* CTAs */}
           <div className="flex flex-wrap items-center gap-3">
-            <a href="#events" className="bg-white text-blue-700 font-semibold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:bg-blue-50 transition-colors">
+            <a
+              href="#events"
+              className="bg-saffron-600 hover:bg-saffron-500 text-white font-semibold text-sm px-6 py-3 rounded-2xl shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-brand-600"
+            >
               Browse events
             </a>
-            {user?.role === 'organizer'
-              ? <Link to="/organizer/events/new" className="border border-white/40 text-white font-semibold text-sm px-5 py-2.5 rounded-xl hover:bg-white/10 transition-colors">+ Post an event</Link>
-              : !user && <Link to="/register" className="border border-white/40 text-white font-semibold text-sm px-5 py-2.5 rounded-xl hover:bg-white/10 transition-colors">Organising? Join as organiser</Link>
-            }
+            {user?.role === 'organizer' ? (
+              <Link
+                to="/organizer/events/new"
+                className="border border-white/30 text-white font-semibold text-sm px-6 py-3 rounded-2xl hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-brand-600"
+              >
+                + Post an event
+              </Link>
+            ) : !user && (
+              <Link
+                to="/register"
+                className="border border-white/30 text-white font-semibold text-sm px-6 py-3 rounded-2xl hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-brand-600"
+              >
+                Organising? Join as organiser
+              </Link>
+            )}
           </div>
+
+          {/* Stats pills — gold-300 on maroon = 6.60:1 ✅ */}
           {!loading && (
-            <div className="flex flex-wrap gap-2 mt-6 text-xs font-medium">
-              <span className="bg-white/15 backdrop-blur px-3 py-1 rounded-full">{events.length} upcoming</span>
+            <div className="flex flex-wrap gap-2 mt-6 text-xs font-semibold">
+              <span className="bg-white/10 backdrop-blur-sm text-white px-3 py-1.5 rounded-full">
+                {events.length} upcoming
+              </span>
               {closingSoon > 0 && (
-                <span className="bg-orange-400/90 text-white px-3 py-1 rounded-full">⏰ {closingSoon} closing this week</span>
+                <span className="bg-brand-700/60 text-gold-300 px-3 py-1.5 rounded-full">
+                  ⏰ {closingSoon} closing this week
+                </span>
               )}
             </div>
           )}
         </div>
       </section>
 
-      {/* Category chips */}
+      {/* ── Category chips ──────────────────────────────────────────────────── */}
       <div id="events" className="mb-6 scroll-mt-20">
         <CategoryChips value={filters.category} onChange={v => setFilter('category', v)} />
       </div>
 
-      {/* Filters */}
-      <div className="mb-6">
+      {/* ── Filters ─────────────────────────────────────────────────────────── */}
+      <div className="mb-5">
         <EventFilters filters={filters} onChange={setFilter} onClear={clearFilters} resultCount={events.length} />
       </div>
 
-      {/* Sort + view toggle */}
-      <div className="flex items-center justify-between sm:justify-end mb-4 gap-3">
-        <label className="flex items-center gap-2 text-sm text-gray-500">
+      {/* ── Sort + view toggle ───────────────────────────────────────────────── */}
+      <div className="flex items-center justify-between sm:justify-end mb-5 gap-3">
+        <label className="flex items-center gap-2 text-sm text-brand-600/70 dark:text-brand-300 font-medium">
           Sort
           <select
             value={sortMode}
             onChange={e => setSortMode(e.target.value)}
-            className="text-sm border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="text-sm border border-brand-200 dark:border-brand-700 rounded-xl px-3 py-1.5 bg-white dark:bg-brand-900 text-brand-600 dark:text-brand-100 focus:outline-none focus:ring-2 focus:ring-saffron-600"
           >
             {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
         </label>
 
-        {/* View toggle — mobile only; desktop always shows side-by-side */}
-        <div className="flex items-center gap-2 lg:hidden">
-          <span className="text-sm text-gray-500 mr-1">View:</span>
+        {/* Mobile-only view toggle */}
+        <div className="flex items-center gap-1.5 lg:hidden" role="group" aria-label="View mode">
           <button
             onClick={() => setViewMode('grid')}
             aria-pressed={viewMode === 'grid'}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-blue-400'}`}
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-saffron-600 focus-visible:ring-offset-2 ${
+              viewMode === 'grid'
+                ? 'bg-brand-600 text-white'
+                : 'bg-white dark:bg-brand-900 border border-brand-200 dark:border-brand-700 text-brand-600 dark:text-brand-200 hover:border-saffron-600'
+            }`}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
             Grid
@@ -128,7 +164,11 @@ export default function HomePage() {
           <button
             onClick={() => setViewMode('map')}
             aria-pressed={viewMode === 'map'}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${viewMode === 'map' ? 'bg-blue-600 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-blue-400'}`}
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-saffron-600 focus-visible:ring-offset-2 ${
+              viewMode === 'map'
+                ? 'bg-brand-600 text-white'
+                : 'bg-white dark:bg-brand-900 border border-brand-200 dark:border-brand-700 text-brand-600 dark:text-brand-200 hover:border-saffron-600'
+            }`}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
             Map
@@ -136,7 +176,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Desktop: side-by-side grid + map */}
+      {/* ── Desktop: grid + map side-by-side ─────────────────────────────────── */}
       <div className="hidden lg:grid lg:grid-cols-5 lg:gap-6">
         <div className="lg:col-span-3">
           <EventGrid
@@ -152,20 +192,21 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Mobile: toggle */}
+      {/* ── Mobile: toggle ─────────────────────────────────────────────────────── */}
       <div className="lg:hidden">
-        {viewMode === 'grid'
-          ? <EventGrid
-              events={sortedEvents}
-              loading={loading}
-              bookmarkedIds={bookmarkedIds}
-              onBookmark={toggleBookmark}
-              onClearFilters={clearFilters}
-            />
-          : <div className="h-[500px]">
-              <EventMap events={events} onMarkerClick={setSelectedEventId} selectedEventId={selectedEventId} />
-            </div>
-        }
+        {viewMode === 'grid' ? (
+          <EventGrid
+            events={sortedEvents}
+            loading={loading}
+            bookmarkedIds={bookmarkedIds}
+            onBookmark={toggleBookmark}
+            onClearFilters={clearFilters}
+          />
+        ) : (
+          <div className="h-[500px] rounded-3xl overflow-hidden">
+            <EventMap events={events} onMarkerClick={setSelectedEventId} selectedEventId={selectedEventId} />
+          </div>
+        )}
       </div>
     </div>
   )

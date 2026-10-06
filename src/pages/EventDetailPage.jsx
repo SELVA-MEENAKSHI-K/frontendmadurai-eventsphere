@@ -112,17 +112,9 @@ export default function EventDetailPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        {/* Back link */}
-        <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 transition-colors mb-6">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          Back to Events
-        </Link>
-
-        {/* Deadline urgency banner */}
+        {/* Deadline urgency banner — gold-300 text on brand-600 bg = 6.60:1 ✅ */}
         {deadlineSoon && !deadlinePassed && (
-          <div className="flex items-center gap-2 bg-orange-50 border border-orange-200 text-orange-700 text-sm font-medium px-4 py-3 rounded-xl mb-4">
+          <div className="flex items-center gap-2 bg-brand-600 text-gold-300 text-sm font-semibold px-4 py-3 rounded-2xl mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -130,67 +122,71 @@ export default function EventDetailPage() {
           </div>
         )}
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white dark:bg-brand-900 rounded-4xl shadow-card border border-brand-100 dark:border-brand-800 overflow-hidden">
 
-          {/* Poster — fade in on load */}
-          <div className="relative h-56 sm:h-80 bg-gradient-to-br from-blue-50 to-indigo-100 overflow-hidden">
+          {/* ── Poster ─────────────────────────────────────────────────────── */}
+          <div className="relative h-56 sm:h-80 bg-gradient-to-br from-brand-100 to-brand-200 dark:from-brand-800 dark:to-brand-700 overflow-hidden">
             {poster_url ? (
               <>
-                {!imgLoaded && <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-indigo-200 animate-pulse" />}
+                {!imgLoaded && <div className="absolute inset-0 bg-brand-100 dark:bg-brand-800 animate-pulse" />}
                 <img
                   src={poster_url}
                   alt={`${title} poster`}
                   onLoad={() => setImgLoaded(true)}
+                  loading="lazy"
                   className={`w-full h-full object-cover transition-opacity duration-500 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
                 />
               </>
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-blue-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-brand-600/20 dark:text-brand-400/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
             )}
 
-            {/* Share + bookmark */}
+            {/* Share + bookmark — brand-600 icons on white/80 = 11.8:1 ✅ */}
             <div className="absolute top-4 right-4 flex gap-2">
               <button
                 onClick={handleShare}
-                className="p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors shadow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-white/80 dark:bg-brand-900/80 backdrop-blur-sm hover:bg-white dark:hover:bg-brand-900 shadow transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-saffron-600 focus-visible:ring-offset-1"
                 aria-label="Share this event"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-brand-600 dark:text-brand-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                 </svg>
               </button>
               <button
                 onClick={() => toggleBookmark(id)}
-                className="p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors shadow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-white/80 dark:bg-brand-900/80 backdrop-blur-sm hover:bg-white dark:hover:bg-brand-900 shadow transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-saffron-600 focus-visible:ring-offset-1"
                 aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark this event'}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className={`h-5 w-5 transition-colors ${isBookmarked ? 'text-blue-600 fill-blue-600' : 'text-gray-400'}`}
+                  className={`h-5 w-5 transition-colors ${isBookmarked ? 'text-saffron-600 fill-saffron-600' : 'text-brand-600/50 dark:text-brand-300'}`}
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                   fill={isBookmarked ? 'currentColor' : 'none'}
+                  aria-hidden="true"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                 </svg>
               </button>
             </div>
 
-            {/* Category badge overlay */}
             <div className="absolute bottom-4 left-4">
               <EventBadge category={category} />
             </div>
           </div>
 
-          {/* Content */}
+          {/* ── Content ────────────────────────────────────────────────────── */}
           <div className="p-6 sm:p-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight mb-3">{title}</h1>
+            <h1 className="font-display text-2xl sm:text-3xl font-bold text-brand-600 dark:text-brand-50 leading-tight mb-3">
+              {title}
+            </h1>
+
             {is_demo && (
-              <p className="text-xs font-medium text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2 mb-4">
+              <p className="text-xs font-semibold text-teal-600 dark:text-teal-400 bg-teal-100/50 dark:bg-teal-500/10 border border-teal-200 dark:border-teal-500/20 rounded-xl px-3 py-2 mb-4">
                 Demo event · Sample information for preview.
               </p>
             )}
@@ -198,26 +194,29 @@ export default function EventDetailPage() {
             {domain.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 {domain.map(tag => (
-                  <span key={tag} className="text-xs bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full font-medium">{tag}</span>
+                  <span key={tag} className="text-xs bg-brand-100 dark:bg-brand-800 text-brand-600 dark:text-brand-200 px-2.5 py-1 rounded-full font-semibold">
+                    {tag}
+                  </span>
                 ))}
               </div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 p-4 bg-gray-50 rounded-xl">
-              <InfoRow icon={<CalendarIcon />} label="Event Date"              value={formatDateTime(event_date)} />
+            {/* Info grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 p-4 bg-brand-50 dark:bg-brand-800/50 rounded-2xl">
+              <InfoRow icon={<CalendarIcon />} label="Event Date" value={formatDateTime(event_date)} />
               <InfoRow
                 icon={<ClockIcon />}
                 label="Registration Deadline"
                 value={deadline ? `${formatDateTime(deadline)}${countdown ? ` (${countdown})` : ''}` : 'No deadline set'}
-                valueClass={deadlinePassed ? 'text-red-600' : deadlineSoon ? 'text-orange-600' : undefined}
+                valueClass={deadlinePassed ? 'text-red-600 dark:text-red-400' : deadlineSoon ? 'text-gold-500 dark:text-gold-300' : undefined}
               />
-              <InfoRow icon={<PinIcon />}     label="Venue"   value={venue_name} />
+              <InfoRow icon={<PinIcon />} label="Venue" value={venue_name} />
               <InfoRow
                 icon={<MapIcon />}
                 label="Area"
                 value={
                   mapsUrl
-                    ? <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 underline underline-offset-2">{micro_location}, Madurai ↗</a>
+                    ? <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="text-saffron-600 dark:text-saffron-400 hover:underline underline-offset-2">{micro_location}, Madurai ↗</a>
                     : `${micro_location}, Madurai`
                 }
               />
@@ -234,37 +233,37 @@ export default function EventDetailPage() {
 
             {description && (
               <div className="mb-6">
-                <h2 className="text-base font-semibold text-gray-800 mb-2">About this event</h2>
-                <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">{description}</p>
+                <h2 className="text-base font-semibold text-brand-600 dark:text-brand-100 mb-2">About this event</h2>
+                <p className="text-brand-600/70 dark:text-brand-300 text-sm leading-relaxed whitespace-pre-line">{description}</p>
               </div>
             )}
 
             {eligibility && (
               <div className="mb-6">
-                <h2 className="text-base font-semibold text-gray-800 mb-2">Eligibility</h2>
-                <p className="text-gray-600 text-sm leading-relaxed">{eligibility}</p>
+                <h2 className="text-base font-semibold text-brand-600 dark:text-brand-100 mb-2">Eligibility</h2>
+                <p className="text-brand-600/70 dark:text-brand-300 text-sm leading-relaxed">{eligibility}</p>
               </div>
             )}
 
-            <div className="pt-4 border-t border-gray-100 flex flex-wrap items-center gap-3">
+            {/* CTA row */}
+            <div className="pt-5 border-t border-brand-100 dark:border-brand-700 flex flex-wrap items-center gap-3">
               {is_demo && !deadlinePassed ? (
                 <div className="flex flex-col items-start gap-2">
                   {demoRegistration ? (
-                    <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 flex flex-col items-center gap-3 w-full sm:w-auto">
-                      <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide">Demo Registration QR</p>
+                    <div className="bg-teal-50 dark:bg-teal-500/10 border border-teal-200 dark:border-teal-500/20 rounded-2xl p-4 flex flex-col items-center gap-3 w-full sm:w-auto">
+                      <p className="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest">Demo Registration QR</p>
                       <img
                         src={qrImageUrl(demoRegistration.token)}
                         alt={`QR code for token ${demoRegistration.token}`}
                         width={180}
                         height={180}
-                        className="rounded-xl border border-blue-200"
+                        className="rounded-xl border border-teal-200 dark:border-teal-500/30"
                       />
-                      <p className="text-[11px] font-mono text-blue-800 bg-white border border-blue-200 rounded-lg px-3 py-1.5 select-all tracking-widest">
+                      <p className="text-[11px] font-mono text-teal-700 dark:text-teal-300 bg-white dark:bg-brand-900 border border-teal-200 dark:border-teal-500/20 rounded-lg px-3 py-1.5 select-all tracking-widest">
                         {demoRegistration.token}
                       </p>
-                      <p className="text-xs text-gray-500 text-center max-w-xs">
-                        Show this QR or type the code above at the check-in desk.
-                        Demo only — not sent to the organiser.
+                      <p className="text-xs text-brand-600/50 dark:text-brand-300 text-center max-w-xs">
+                        Show this QR or type the code at the check-in desk. Demo only.
                       </p>
                     </div>
                   ) : (
@@ -272,12 +271,12 @@ export default function EventDetailPage() {
                       <button
                         type="button"
                         onClick={handleDemoRegistration}
-                        className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        className="inline-flex items-center gap-2 bg-saffron-600 hover:bg-saffron-500 text-white font-semibold px-6 py-3 rounded-2xl shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-saffron-600 focus-visible:ring-offset-2"
                       >
                         Register for this event (Demo)
                       </button>
-                      <p className="text-xs text-gray-500">
-                        Demo registration is saved only in this browser; it is not sent to the organiser.
+                      <p className="text-xs text-brand-600/50 dark:text-brand-400">
+                        Demo registration is saved only in this browser; not sent to the organiser.
                       </p>
                     </>
                   )}
@@ -287,7 +286,7 @@ export default function EventDetailPage() {
                   href={registration_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  className="inline-flex items-center gap-2 bg-saffron-600 hover:bg-saffron-500 text-white font-semibold px-6 py-3 rounded-2xl shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-saffron-600 focus-visible:ring-offset-2"
                 >
                   Register Now
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -295,35 +294,26 @@ export default function EventDetailPage() {
                   </svg>
                 </a>
               ) : (
-                <button disabled aria-disabled="true" className="inline-flex items-center gap-2 bg-gray-200 text-gray-500 font-semibold px-6 py-3 rounded-xl cursor-not-allowed">
+                <button disabled aria-disabled="true" className="inline-flex items-center gap-2 bg-brand-100 dark:bg-brand-800 text-brand-600/50 dark:text-brand-400 font-semibold px-6 py-3 rounded-2xl cursor-not-allowed">
                   {is_demo && deadlinePassed ? 'Demo registration closed' : deadlinePassed ? 'Registration Closed' : 'Registration unavailable'}
                 </button>
               )}
 
               {gcalUrl && (
                 <>
-                  <a
-                    href={gcalUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 border border-gray-200 hover:border-blue-400 text-gray-700 text-sm font-semibold px-4 py-3 rounded-xl transition-colors"
-                  >
+                  <a href={gcalUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 border border-brand-200 dark:border-brand-700 hover:border-saffron-600 dark:hover:border-saffron-400 text-brand-600 dark:text-brand-200 text-sm font-semibold px-4 py-3 rounded-2xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-saffron-600 focus-visible:ring-offset-2">
                     📅 Google Calendar
                   </a>
-                  <button
-                    type="button"
-                    onClick={() => downloadICS(event)}
-                    className="inline-flex items-center gap-2 border border-gray-200 hover:border-blue-400 text-gray-700 text-sm font-semibold px-4 py-3 rounded-xl transition-colors"
-                  >
+                  <button type="button" onClick={() => downloadICS(event)} className="inline-flex items-center gap-2 border border-brand-200 dark:border-brand-700 hover:border-saffron-600 dark:hover:border-saffron-400 text-brand-600 dark:text-brand-200 text-sm font-semibold px-4 py-3 rounded-2xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-saffron-600 focus-visible:ring-offset-2">
                     ⬇ .ics
                   </button>
                 </>
               )}
 
               {deadline && !deadlinePassed && (
-                <span className="text-sm text-gray-400">
+                <span className="text-sm text-brand-600/50 dark:text-brand-400">
                   {deadlineSoon
-                    ? <span className="text-orange-600 font-medium">⏰ {countdown}</span>
+                    ? <span className="text-gold-500 dark:text-gold-300 font-semibold">⏰ {countdown}</span>
                     : `Closes ${formatDateTime(deadline)}`
                   }
                 </span>
@@ -341,10 +331,11 @@ export default function EventDetailPage() {
 function InfoRow({ icon, label, value, valueClass, className }) {
   return (
     <div className={`flex items-start gap-3 ${className ?? ''}`}>
-      <span className="mt-0.5 flex-shrink-0 text-gray-400">{icon}</span>
+      {/* Icon color: brand-600/40 on brand-50 bg is decorative ✅ */}
+      <span className="mt-0.5 flex-shrink-0 text-brand-600/40 dark:text-brand-400">{icon}</span>
       <div className="flex flex-col gap-0.5 min-w-0">
-        <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">{label}</span>
-        <span className={`text-sm font-medium text-gray-800 break-words ${valueClass ?? ''}`}>{value}</span>
+        <span className="text-xs font-semibold text-brand-600/50 dark:text-brand-400 uppercase tracking-wide">{label}</span>
+        <span className={`text-sm font-medium text-brand-600 dark:text-brand-100 break-words ${valueClass ?? ''}`}>{value}</span>
       </div>
     </div>
   )

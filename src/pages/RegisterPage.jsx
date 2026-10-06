@@ -5,14 +5,7 @@ import { useAuth } from '../context/AuthContext'
 export default function RegisterPage() {
   const { register } = useAuth()
   const navigate     = useNavigate()
-
-  const [form, setForm] = useState({
-    full_name: '',
-    email:     '',
-    password:  '',
-    role:      'student',
-    college:   '',
-  })
+  const [form, setForm] = useState({ full_name: '', email: '', password: '', role: 'student', college: '' })
   const [error, setError]     = useState(null)
   const [loading, setLoading] = useState(false)
 
@@ -23,21 +16,10 @@ export default function RegisterPage() {
   async function handleSubmit(e) {
     e.preventDefault()
     setError(null)
-
-    if (form.password.length < 8) {
-      setError('Password must be at least 8 characters.')
-      return
-    }
-
+    if (form.password.length < 8) { setError('Password must be at least 8 characters.'); return }
     setLoading(true)
     try {
-      await register({
-        email:     form.email,
-        password:  form.password,
-        full_name: form.full_name,
-        role:      form.role,
-        college:   form.college || null,
-      })
+      await register({ email: form.email, password: form.password, full_name: form.full_name, role: form.role, college: form.college || null })
       navigate('/', { replace: true })
     } catch (err) {
       setError(err.message)
@@ -46,142 +28,117 @@ export default function RegisterPage() {
     }
   }
 
+  const inputCls = 'w-full border border-brand-200 dark:border-brand-700 rounded-xl px-4 py-2.5 text-sm bg-white dark:bg-brand-900 text-brand-600 dark:text-brand-100 placeholder:text-brand-600/30 dark:placeholder:text-brand-500 focus:outline-none focus:ring-2 focus:ring-saffron-600 focus:border-transparent transition-colors'
+  const labelCls = 'block text-xs font-semibold text-brand-600/60 dark:text-brand-300 uppercase tracking-wide mb-1.5'
+
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
+    <div className="min-h-[80vh] flex items-stretch">
 
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">Create an account</h1>
-          <p className="text-sm text-gray-500">Join EventSphere to discover and organise events</p>
-        </div>
-
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 space-y-5"
-          noValidate
-        >
-          {error && (
-            <div role="alert" className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
-              {error}
-            </div>
-          )}
-
-          {/* Full name */}
-          <div>
-            <label htmlFor="full_name" className="block text-sm font-medium text-gray-700 mb-1">
-              Full name
-            </label>
-            <input
-              id="full_name"
-              name="full_name"
-              type="text"
-              value={form.full_name}
-              onChange={handleChange}
-              required
-              autoComplete="name"
-              placeholder="Selva Meenakshi"
-              className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+      {/* ── Left brand panel ─────────────────────────────────────────────────
+          White text on maroon = 9.1:1 ✅.                                   */}
+      <div
+        className="hidden lg:flex lg:w-1/2 bg-brand-600 dark:bg-brand-800 flex-col justify-between p-12 text-white"
+        style={{ backgroundImage: 'radial-gradient(circle, rgba(253,246,236,0.06) 1px, transparent 1px)', backgroundSize: '20px 20px' }}
+        aria-hidden="true"
+      >
+        <div>
+          <div className="flex items-center gap-2 mb-12">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="currentColor">
+              <path fillRule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-2.079 3.713-5.077 3.713-9.077a8 8 0 10-16 0c0 4 1.769 6.998 3.713 9.077a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742z" clipRule="evenodd" />
+            </svg>
+            <span className="font-display font-bold text-xl">EventSphere</span>
           </div>
-
-          {/* Email */}
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              autoComplete="email"
-              placeholder="you@example.com"
-              className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
-          {/* Password */}
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              Password{' '}
-              <span className="text-gray-400 font-normal">(min 8 characters)</span>
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              value={form.password}
-              onChange={handleChange}
-              required
-              minLength={8}
-              autoComplete="new-password"
-              placeholder="••••••••"
-              className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
-          {/* Role */}
-          <fieldset>
-            <legend className="block text-sm font-medium text-gray-700 mb-2">I am a…</legend>
-            <div className="flex gap-4">
-              {[{ value: 'student', label: 'Student' }, { value: 'organizer', label: 'Organizer' }].map(({ value, label }) => (
-                <label
-                  key={value}
-                  className={`flex-1 flex items-center justify-center gap-2 border rounded-xl py-2.5 text-sm font-medium cursor-pointer transition-colors ${
-                    form.role === value
-                      ? 'bg-blue-600 text-white border-blue-600'
-                      : 'border-gray-200 text-gray-600 hover:border-blue-400'
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="role"
-                    value={value}
-                    checked={form.role === value}
-                    onChange={handleChange}
-                    className="sr-only"
-                  />
-                  {label}
-                </label>
-              ))}
-            </div>
-          </fieldset>
-
-          {/* College (optional) */}
-          <div>
-            <label htmlFor="college" className="block text-sm font-medium text-gray-700 mb-1">
-              College{' '}
-              <span className="text-gray-400 font-normal">(optional)</span>
-            </label>
-            <input
-              id="college"
-              name="college"
-              type="text"
-              value={form.college}
-              onChange={handleChange}
-              autoComplete="organization"
-              placeholder="Thiagarajar College of Engineering"
-              className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-semibold py-2.5 rounded-xl transition-colors"
-          >
-            {loading ? 'Creating account…' : 'Create account'}
-          </button>
-
-          <p className="text-center text-sm text-gray-500">
-            Already have an account?{' '}
-            <Link to="/login" className="text-blue-600 hover:underline font-medium">
-              Sign in
-            </Link>
+          <h2 className="font-display text-4xl font-bold leading-snug mb-4">
+            Join Madurai&apos;s <span className="text-saffron-400">event community</span>
+          </h2>
+          <p className="text-white/70 text-base leading-relaxed max-w-sm">
+            Create an account to bookmark events, register for demos, and — if you&apos;re an organiser — post your own events to the city.
           </p>
-        </form>
+        </div>
+        <p className="text-white/30 text-xs">📍 Madurai · students · founders · makers</p>
+      </div>
+
+      {/* ── Form panel ───────────────────────────────────────────────────────── */}
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-brand-50 dark:bg-brand-950">
+        <div className="w-full max-w-md">
+
+          <div className="mb-8">
+            <h1 className="font-display text-2xl font-bold text-brand-600 dark:text-brand-50 mb-1">Create an account</h1>
+            <p className="text-sm text-brand-600/60 dark:text-brand-300">Join EventSphere to discover and organise events</p>
+          </div>
+
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white dark:bg-brand-900 rounded-3xl border border-brand-100 dark:border-brand-800 shadow-card p-8 space-y-5"
+            noValidate
+          >
+            {error && (
+              <div role="alert" className="text-sm text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl px-4 py-3">
+                {error}
+              </div>
+            )}
+
+            <div>
+              <label htmlFor="full_name" className={labelCls}>Full name</label>
+              <input id="full_name" name="full_name" type="text" value={form.full_name} onChange={handleChange} required autoComplete="name" placeholder="Selva Meenakshi" className={inputCls} />
+            </div>
+
+            <div>
+              <label htmlFor="email" className={labelCls}>Email</label>
+              <input id="email" name="email" type="email" value={form.email} onChange={handleChange} required autoComplete="email" placeholder="you@example.com" className={inputCls} />
+            </div>
+
+            <div>
+              <label htmlFor="password" className={labelCls}>
+                Password <span className="normal-case font-normal text-brand-600/40 dark:text-brand-400">(min 8 characters)</span>
+              </label>
+              <input id="password" name="password" type="password" value={form.password} onChange={handleChange} required minLength={8} autoComplete="new-password" placeholder="••••••••" className={inputCls} />
+            </div>
+
+            {/* Role selector */}
+            <fieldset>
+              <legend className={labelCls}>I am a…</legend>
+              <div className="flex gap-3">
+                {[{ value: 'student', label: 'Student' }, { value: 'organizer', label: 'Organizer' }].map(({ value, label }) => (
+                  <label
+                    key={value}
+                    className={`flex-1 flex items-center justify-center gap-2 border rounded-xl py-2.5 text-sm font-semibold cursor-pointer transition-colors ${
+                      form.role === value
+                        ? 'bg-saffron-600 border-saffron-600 text-white'
+                        : 'border-brand-200 dark:border-brand-700 text-brand-600 dark:text-brand-200 hover:border-saffron-600 dark:hover:border-saffron-400 bg-white dark:bg-brand-900'
+                    }`}
+                  >
+                    <input type="radio" name="role" value={value} checked={form.role === value} onChange={handleChange} className="sr-only" />
+                    {label}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            <div>
+              <label htmlFor="college" className={labelCls}>
+                College <span className="normal-case font-normal text-brand-600/40 dark:text-brand-400">(optional)</span>
+              </label>
+              <input id="college" name="college" type="text" value={form.college} onChange={handleChange} autoComplete="organization" placeholder="Thiagarajar College of Engineering" className={inputCls} />
+            </div>
+
+            {/* white on saffron-600 = 5.12:1 ✅ */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-saffron-600 hover:bg-saffron-500 disabled:bg-saffron-300 text-white font-semibold py-3 rounded-2xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-saffron-600 focus-visible:ring-offset-2"
+            >
+              {loading ? 'Creating account…' : 'Create account'}
+            </button>
+
+            <p className="text-center text-sm text-brand-600/60 dark:text-brand-300">
+              Already have an account?{' '}
+              <Link to="/login" className="font-semibold text-saffron-600 dark:text-saffron-400 hover:underline">
+                Sign in
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   )

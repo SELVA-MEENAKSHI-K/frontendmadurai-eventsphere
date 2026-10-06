@@ -2,16 +2,77 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Leaflet map container — must have explicit height */
+/* ── CSS custom properties ───────────────────────────────────────────────────
+   Light and dark theme values. Tailwind's 'dark' class on <html> toggles them.
+   These are available in non-Tailwind contexts (Leaflet popups, etc.)        */
+@layer base {
+  :root {
+    --color-bg:          #FDF6EC;   /* brand-50  — warm cream */
+    --color-bg-card:     #FFFFFF;
+    --color-bg-elevated: #FAE8CC;   /* brand-100 */
+    --color-text:        #1A0F0A;   /* deep ink  */
+    --color-text-muted:  #6B4A3A;
+    --color-border:      #EDE0D0;
+    --color-brand:       #7B1828;   /* brand-600 maroon */
+    --color-accent:      #B84D00;   /* saffron-600 */
+    --color-accent-hover:#CB5C09;
+    --color-success:     #0D7E76;   /* teal-500  */
+  }
+
+  .dark {
+    --color-bg:          #120A08;   /* brand-950 */
+    --color-bg-card:     #1E0E0B;
+    --color-bg-elevated: #2A1410;
+    --color-text:        #F5EDE4;
+    --color-text-muted:  #C4A090;
+    --color-border:      #3D1E18;
+    --color-brand:       #F5EDE4;   /* brand text inverts to cream in dark */
+    --color-accent:      #F0844A;   /* lighter saffron for dark bg */
+    --color-accent-hover:#E8630A;
+    --color-success:     #0FB8AD;   /* teal-400 */
+  }
+
+  /* Apply the theme background and text to the whole page */
+  html {
+    background-color: var(--color-bg);
+    color:            var(--color-text);
+    font-family:      'Plus Jakarta Sans', Inter, system-ui, sans-serif;
+    /* Smooth scrolling — respects prefers-reduced-motion below */
+    scroll-behavior:  smooth;
+  }
+
+  /* Disable smooth scroll and entrance animations for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *, *::before, *::after {
+      animation-duration:   0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration:  0.01ms !important;
+    }
+  }
+
+  /* Default focus-visible ring — uses saffron glow */
+  :focus-visible {
+    outline:        2px solid #B84D00;
+    outline-offset: 2px;
+  }
+}
+
+/* ── Leaflet map container ───────────────────────────────────────────────────
+   Must have explicit height; z-index keeps it below modals and toasts.        */
 .leaflet-container {
-  width: 100%;
-  height: 100%;
+  width:   100%;
+  height:  100%;
   z-index: 0;
 }
 
-/* Custom scrollbar for filter panels */
+/* ── Scrollbar ───────────────────────────────────────────────────────────────
+   Thin scrollbar for filter panels and mobile drawer.                         */
 @layer utilities {
   .scrollbar-thin {
     scrollbar-width: thin;
+    scrollbar-color: #C4A090 transparent;
   }
 }

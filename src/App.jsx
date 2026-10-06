@@ -4,9 +4,11 @@ import { Toaster } from 'react-hot-toast'
 
 import { AuthProvider } from './context/AuthContext'
 import { FilterProvider } from './context/FilterContext'
+import { ThemeProvider } from './context/ThemeContext'
 
 import Navbar from './components/common/Navbar'
 import Footer from './components/common/Footer'
+import BottomNav from './components/common/BottomNav'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import OrganizerRoute from './components/common/OrganizerRoute'
 import PageNavigation from './components/common/PageNavigation'
@@ -27,15 +29,16 @@ import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
   return (
+    <ThemeProvider>
     <HelmetProvider>
       <BrowserRouter>
         <AuthProvider>
           <FilterProvider>
-            <div className="min-h-screen bg-gray-50 flex flex-col">
+            <div className="min-h-screen bg-brand-50 dark:bg-brand-950 flex flex-col">
               <Navbar />
               <PageNavigation />
 
-              <main className="flex-1">
+              <main className="flex-1 pb-16 md:pb-0">
                 <Routes>
                   <Route path="/"           element={<HomePage />} />
                   <Route path="/calendar"   element={<CalendarPage />} />
@@ -104,6 +107,7 @@ export default function App() {
               </main>
 
               <Footer />
+              <BottomNav />
             </div>
 
             <Toaster
@@ -117,5 +121,6 @@ export default function App() {
         </AuthProvider>
       </BrowserRouter>
     </HelmetProvider>
+    </ThemeProvider>
   )
 }
