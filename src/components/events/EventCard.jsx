@@ -7,6 +7,7 @@ export default function EventCard({ event, isBookmarked = false, onBookmark }) {
   const {
     id, title, category, domain = [],
     venue_name, micro_location, event_date, deadline, poster_url,
+    _registered = false,
   } = event
 
   const deadlinePassed = isDeadlinePassed(deadline)
@@ -55,6 +56,13 @@ export default function EventCard({ event, isBookmarked = false, onBookmark }) {
         <div className="absolute top-3 left-3">
           <EventBadge category={category} />
         </div>
+
+        {/* Registered badge — bottom-left (demo registrations) */}
+        {_registered && (
+          <span className="absolute bottom-3 left-3 inline-flex items-center gap-1 bg-teal-50 dark:bg-brand-900 border border-teal-200 dark:border-teal-500/30 text-teal-700 dark:text-teal-300 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
+            ✓ Registered
+          </span>
+        )}
 
         {/* Date chip — bottom-right; white bg on image is decorative ✅ */}
         {dayNum && (
