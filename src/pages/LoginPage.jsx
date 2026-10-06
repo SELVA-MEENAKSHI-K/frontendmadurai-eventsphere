@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function LoginPage() {
-  const { login }  = useAuth()
+  const { login, loginAsDemo } = useAuth()
   const navigate   = useNavigate()
   const location   = useLocation()
   const [email, setEmail]       = useState('')
@@ -24,6 +24,12 @@ export default function LoginPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  function handleDemoLogin() {
+    setError(null)
+    loginAsDemo()
+    navigate(from, { replace: true })
   }
 
   return (
@@ -124,6 +130,25 @@ export default function LoginPage() {
               <Link to="/register" className="font-semibold text-saffron-600 dark:text-saffron-400 hover:underline">
                 Register
               </Link>
+            </p>
+
+            {/* Demo mode divider */}
+            <div className="flex items-center gap-3" aria-hidden="true">
+              <span className="h-px flex-1 bg-brand-100 dark:bg-brand-800" />
+              <span className="text-xs text-brand-600/40 dark:text-brand-500 font-medium">or</span>
+              <span className="h-px flex-1 bg-brand-100 dark:bg-brand-800" />
+            </div>
+
+            {/* Demo login — brand-600 on brand-100 bg = 11.8:1 ✅ */}
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              className="w-full border-2 border-brand-200 dark:border-brand-700 hover:border-saffron-600 dark:hover:border-saffron-400 bg-white dark:bg-brand-900 text-brand-600 dark:text-brand-200 font-semibold py-3 rounded-2xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-saffron-600 focus-visible:ring-offset-2"
+            >
+              Try Demo Mode
+            </button>
+            <p className="text-center text-xs text-brand-600/40 dark:text-brand-500 -mt-2">
+              Explore without an account · no sign-up required
             </p>
           </form>
         </div>

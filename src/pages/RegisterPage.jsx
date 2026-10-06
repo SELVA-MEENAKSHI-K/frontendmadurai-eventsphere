@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function RegisterPage() {
-  const { register } = useAuth()
+  const { register, loginAsDemo } = useAuth()
   const navigate     = useNavigate()
   const [form, setForm] = useState({ full_name: '', email: '', password: '', role: 'student', college: '' })
   const [error, setError]     = useState(null)
@@ -26,6 +26,12 @@ export default function RegisterPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  function handleDemoLogin() {
+    setError(null)
+    loginAsDemo()
+    navigate('/', { replace: true })
   }
 
   const inputCls = 'w-full border border-brand-200 dark:border-brand-700 rounded-xl px-4 py-2.5 text-sm bg-white dark:bg-brand-900 text-brand-600 dark:text-brand-100 placeholder:text-brand-600/30 dark:placeholder:text-brand-500 focus:outline-none focus:ring-2 focus:ring-saffron-600 focus:border-transparent transition-colors'
@@ -136,6 +142,25 @@ export default function RegisterPage() {
               <Link to="/login" className="font-semibold text-saffron-600 dark:text-saffron-400 hover:underline">
                 Sign in
               </Link>
+            </p>
+
+            {/* Demo mode divider */}
+            <div className="flex items-center gap-3" aria-hidden="true">
+              <span className="h-px flex-1 bg-brand-100 dark:bg-brand-800" />
+              <span className="text-xs text-brand-600/40 dark:text-brand-500 font-medium">or</span>
+              <span className="h-px flex-1 bg-brand-100 dark:bg-brand-800" />
+            </div>
+
+            {/* Demo login — brand-600 on white = 11.8:1 ✅ */}
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              className="w-full border-2 border-brand-200 dark:border-brand-700 hover:border-saffron-600 dark:hover:border-saffron-400 bg-white dark:bg-brand-900 text-brand-600 dark:text-brand-200 font-semibold py-3 rounded-2xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-saffron-600 focus-visible:ring-offset-2"
+            >
+              Try Demo Mode
+            </button>
+            <p className="text-center text-xs text-brand-600/40 dark:text-brand-500 -mt-2">
+              Explore without an account · no sign-up required
             </p>
           </form>
         </div>
